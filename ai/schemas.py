@@ -59,6 +59,11 @@ class EvaluacionLLM(BaseModel):
     medida_publicada_id: Optional[str] = Field(
         description="id_medida de la lista de medidas publicadas que corresponde a este requisito, o null si ninguna"
     )
+    tramite_medida: Optional[str] = Field(
+        description="Si elegiste una medida publicada: el nombre del trámite o procedimiento en que "
+        "INDECOPI la declaró barrera, copiado tal cual del texto de la medida. Si no lo dice o es "
+        "una restricción general (por ejemplo, un horario), null"
+    )
     color_sugerido: Literal["ambar", "verde"] = Field(
         description="ambar: posible barrera según la Ley Marco o el TUO de la LPAG; verde: se lo pueden pedir"
     )
@@ -85,6 +90,10 @@ class Evaluacion(BaseModel):
     explicacion_simple: str
     publicacion: Optional[MedidaPublicada] = None
     surte_efecto_desde: Optional[date] = None
+    texto_publicacion: str = Field(
+        default="",
+        description="Texto legal fijo sobre la publicación (ai/textos.py); en rojo reemplaza la explicación de Claude",
+    )
     cita_verificada: bool = Field(
         default=False,
         description="El código comprobó que el fragmento citado está, palabra por palabra, en las normas recuperadas",

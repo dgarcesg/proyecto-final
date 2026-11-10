@@ -19,7 +19,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import date
 
-from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo
+from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo, textos
 from ai.schemas import Evaluacion, EvaluacionesLLM, ExtraccionNota
 
 
@@ -64,6 +64,7 @@ def analizar(transcripcion: str, hoy: date | None = None) -> Resultado:
     )
 
     recuperados = base + [a for arts in por_requisito.values() for a in arts]
+    recuperados.append(rag.articulo_completo(textos.CITA_ART_8))  # la que se cita en los rojos
     evaluaciones = []
     for ev in respuesta.evaluaciones:
         final = semaforo.decidir(ev, extraccion.distrito, medidas, hoy)

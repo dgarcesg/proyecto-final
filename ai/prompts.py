@@ -72,6 +72,9 @@ procedimiento.
   * Medida de otra municipalidad: elígela solo si es el mismo tipo de exigencia (por \
 ejemplo, el mismo documento), como precedente, aunque sea de otro procedimiento.
   * Si ninguna corresponde, null. No elijas una medida solo porque trata un tema parecido.
+- tramite_medida: si elegiste una medida, el nombre del trámite o procedimiento en que INDECOPI \
+la declaró barrera, copiado tal cual del texto de la medida (por ejemplo, "Permiso de operación \
+de transporte público"). Si el texto no lo dice o es una restricción general, null.
 - color_sugerido: "ambar" si, según las normas, la municipalidad no podría exigirlo o hay \
 dudas serias de que pueda (por ejemplo, porque no está entre los requisitos máximos del \
 art. 7 de la Ley Marco o porque es documentación prohibida de solicitar). "verde" si la \

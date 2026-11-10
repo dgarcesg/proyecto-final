@@ -26,7 +26,7 @@ HOY = date(2026, 11, 10)
 
 def evaluacion(id_medida, color="verde"):
     return EvaluacionLLM(
-        requisito="requisito", medida_publicada_id=id_medida, color_sugerido=color,
+        requisito="requisito", medida_publicada_id=id_medida, tramite_medida=None, color_sugerido=color,
         norma_citada="", fragmento_usado="", explicacion_simple="",
     )
 
@@ -78,6 +78,38 @@ def test_si_claude_inventa_un_id_no_hay_rojo():
 
 def test_sin_coincidencia_se_respeta_la_sugerencia_de_claude():
     assert color(None, "La Victoria", sugerido="ambar") == "ambar"
+
+
+def decision(id_medida, distrito, medida=MEDIDA, hoy=HOY, tramite=None):
+    ev = evaluacion(id_medida).model_copy(update={"tramite_medida": tramite})
+    return decidir(ev, distrito, {medida.id_medida: medida}, hoy)
+
+
+def test_texto_fijo_del_rojo_y_cita_del_art_8_3():
+    d = decision("PRUEBA#1", "La Victoria")
+    assert d.texto_publicacion == (
+        "INDECOPI declaró esta medida barrera burocrática ilegal con efectos generales (Res. "
+        "0000-2026/SEL-INDECOPI (ficticia), publicada el 08/11/2026). Desde el 09/11/2026 la "
+        "municipalidad no puede exigírtela (art. 8.3 del D.Leg. 1256)."
+    )
+    assert d.norma_citada == "D.Leg. 1256, art. 8" and d.fragmento_usado.startswith("La inaplicación con efectos generales")
+
+
+def test_texto_del_precedente_con_el_tramite_copiado_de_la_medida():
+    con_tramite = MEDIDA.model_copy(update={"medida": "La exigencia de copia del DNI para el procedimiento “Permiso de operación”"})
+    d = decision("PRUEBA#1", "Surquillo", medida=con_tramite, tramite="Permiso de operación")
+    assert d.texto_publicacion.startswith("No es una medida sujeta a inaplicación con efectos generales en tu distrito")
+    assert "para el trámite “Permiso de operación” de la Municipalidad Distrital de La Victoria" in d.texto_publicacion
+
+
+def test_si_el_tramite_no_esta_en_la_medida_no_se_usa():
+    d = decision("PRUEBA#1", "Surquillo", tramite="Licencia de funcionamiento")  # inventado
+    assert "otro trámite" in d.texto_publicacion and "Licencia de funcionamiento" not in d.texto_publicacion
+
+
+def test_texto_si_aun_no_surte_efecto():
+    d = decision("PRUEBA#1", "La Victoria", hoy=date(2026, 11, 8))
+    assert "Surte efecto desde el 09/11/2026" in d.texto_publicacion
 
 
 if __name__ == "__main__":

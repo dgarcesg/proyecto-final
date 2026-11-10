@@ -11,6 +11,9 @@ Un requisito es ROJO solo si Claude lo relacionó con una medida publicada y ade
 Si Claude la relacionó con una medida publicada pero falla alguna de esas condiciones, el
 requisito queda ÁMBAR: hay un precedente, pero no una inaplicación que se pueda exigir en
 esa ventanilla.
+
+En ambos casos, el texto sobre la publicación no lo escribe Claude: es una plantilla fija de
+la founder (ai/textos.py). En rojo, además, la norma citada pasa a ser el art. 8.3 del D.Leg. 1256.
 """
 
 from __future__ import annotations
@@ -20,6 +23,7 @@ import unicodedata
 from datetime import date, timedelta
 from pathlib import Path
 
+from ai import textos
 from ai.schemas import Evaluacion, EvaluacionLLM, MedidaPublicada
 
 TABLA = Path(__file__).resolve().parent.parent / "data" / "publicaciones" / "publicaciones.json"
@@ -60,14 +64,23 @@ def mismo_distrito(a: str | None, b: str | None) -> bool:
     return bool(a) and a == b
 
 
+def motivo_no_rojo(medida: MedidaPublicada, distrito_usuario: str | None, hoy: date) -> str | None:
+    """Por qué una medida publicada NO da rojo; None si da rojo."""
+    if medida.referencia_fuera_de_lima:
+        return "fuera_de_lima"
+    if not mismo_distrito(medida.distrito, distrito_usuario):
+        return "otro_distrito"
+    if not medida.efectos_generales:
+        return "sin_efectos_generales"
+    if medida.estado != "vigente":
+        return "no_vigente"
+    if hoy < surte_efecto_desde(medida):
+        return "aun_no_surte_efecto"
+    return None
+
+
 def es_rojo(medida: MedidaPublicada, distrito_usuario: str | None, hoy: date) -> bool:
-    return (
-        medida.efectos_generales
-        and medida.estado == "vigente"
-        and not medida.referencia_fuera_de_lima
-        and mismo_distrito(medida.distrito, distrito_usuario)
-        and hoy >= surte_efecto_desde(medida)
-    )
+    return motivo_no_rojo(medida, distrito_usuario, hoy) is None
 
 
 def decidir(
@@ -79,20 +92,28 @@ def decidir(
     """Convierte la evaluación de Claude en la evaluación final que ve el usuario."""
     hoy = hoy or date.today()
     medida = medidas.get(ev.medida_publicada_id or "")  # si Claude inventa un id, no existe
+    norma, fragmento, texto = ev.norma_citada, ev.fragmento_usado, ""
 
-    if medida and es_rojo(medida, distrito_usuario, hoy):
-        color = "rojo"
-    elif medida:
-        color = "ambar"  # hay precedente publicado, pero no una inaplicación exigible aquí
+    if medida:
+        desde = surte_efecto_desde(medida)
+        motivo = motivo_no_rojo(medida, distrito_usuario, hoy)
+        if motivo is None:
+            color = "rojo"
+            texto = textos.texto_rojo(medida, desde)  # texto fijo de la founder
+            norma, fragmento = textos.CITA_ART_8, textos.FRAGMENTO_ART_8_3
+        else:
+            color = "ambar"  # hay precedente publicado, pero no una inaplicación exigible aquí
+            texto = textos.texto_ambar(medida, motivo, desde, ev.tramite_medida)
     else:
         color = ev.color_sugerido  # ámbar o verde: el esquema de Claude no permite rojo
 
     return Evaluacion(
         requisito=ev.requisito,
         color=color,
-        norma_citada=ev.norma_citada,
-        fragmento_usado=ev.fragmento_usado,
+        norma_citada=norma,
+        fragmento_usado=fragmento,
         explicacion_simple=ev.explicacion_simple,
         publicacion=medida,
         surte_efecto_desde=surte_efecto_desde(medida) if medida else None,
+        texto_publicacion=texto,
     )

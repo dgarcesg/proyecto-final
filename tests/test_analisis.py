@@ -50,20 +50,21 @@ def test_z_flujo_completo_con_claude_simulado():
         assert 'cita="D.Leg. 1246, art. 5"' in mensaje
         return EvaluacionesLLM(evaluaciones=[
             EvaluacionLLM(requisito="solo puedo atender de 6 de la mañana a 11 de la noche",
-                          medida_publicada_id="2567628-1#2", color_sugerido="ambar",
+                          medida_publicada_id="2567628-1#2", tramite_medida=None, color_sugerido="ambar",
                           norma_citada="D.Leg. 1256, art. 8", fragmento_usado="dispone su inaplicación con efectos generales",
                           explicacion_simple="..."),
             EvaluacionLLM(requisito="croquis de ubicación del local",
-                          medida_publicada_id="INDECOPI:0482-2024/SEL-INDECOPI#1", color_sugerido="ambar",
+                          medida_publicada_id="INDECOPI:0482-2024/SEL-INDECOPI#1",
+                          tramite_medida="Renovación del Certificado de Seguridad de Defensa Civil", color_sugerido="ambar",
                           norma_citada="TUO de la Ley 28976, art. 7",
                           fragmento_usado="serán exigibles como máximo, los siguientes requisitos",
                           explicacion_simple="..."),
-            EvaluacionLLM(requisito="copia de mi DNI", medida_publicada_id=None, color_sugerido="ambar",
+            EvaluacionLLM(requisito="copia de mi DNI", medida_publicada_id=None, tramite_medida=None, color_sugerido="ambar",
                           norma_citada="D.Leg. 1246, art. 5",
                           fragmento_usado="a) Copia del Documento Nacional de Identidad.",
                           explicacion_simple="..."),
             EvaluacionLLM(requisito="solicitud con declaración jurada con mi número de RUC",
-                          medida_publicada_id=None, color_sugerido="verde",
+                          medida_publicada_id=None, tramite_medida=None, color_sugerido="verde",
                           norma_citada="TUO de la Ley 28976, art. 7", fragmento_usado="texto inventado por el modelo",
                           explicacion_simple="..."),
         ])
@@ -81,6 +82,9 @@ def test_z_flujo_completo_con_claude_simulado():
     # mismo distrito / precedente de otro distrito / sin medida (ámbar por norma) / sin medida (verde)
     assert colores == ["rojo", "ambar", "ambar", "verde"]
     assert r.evaluaciones[0].surte_efecto_desde == date(2026, 10, 26)  # día siguiente de la publicación
+    assert r.evaluaciones[0].texto_publicacion.startswith("INDECOPI declaró esta medida")
+    assert r.evaluaciones[0].cita_verificada  # en rojo se cita el art. 8.3 del D.Leg. 1256
+    assert "el trámite “Renovación del Certificado de Seguridad de Defensa Civil”" in r.evaluaciones[1].texto_publicacion
     assert r.evaluaciones[1].cita_verificada
     assert r.evaluaciones[2].cita_verificada
     assert not r.evaluaciones[3].cita_verificada  # la frase no está en la norma
