@@ -36,6 +36,14 @@ cp .env.example .env        # y pega tu ANTHROPIC_API_KEY en .env
 streamlit run app/app.py
 ```
 
+Pruebas (no usan la API de Claude):
+
+```bash
+python -m tests.test_semaforo   # regla del semáforo rojo
+python -m tests.test_normas     # división de las normas por artículo
+python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
+```
+
 ## 7. Modelo de negocio
 
 *(por completar)*
@@ -45,7 +53,8 @@ streamlit run app/app.py
 | Herramienta | Sesión | Dónde está en el repo |
 |---|---|---|
 | Scraping y APIs | 03 | `scraper/` *(en construcción)* |
-| LLM con salidas estructuradas y RAG | 08 | `ai/` *(en construcción)* |
+| RAG: embeddings (multilingual-e5-small) + ChromaDB sobre las normas | 08 | [`ai/normas.py`](ai/normas.py), [`ai/rag.py`](ai/rag.py) |
+| LLM con salidas estructuradas | 08 | `ai/` *(en construcción)* |
 | Voz a texto con Whisper | 13 | `ai/` *(en construcción)* |
 
 ## 9. Qué hizo el agente
@@ -53,6 +62,7 @@ streamlit run app/app.py
 *(se completa al final; registro parcial:)*
 
 - **Estructura del repo:** Claude Code creó las carpetas, `.gitignore`, `.env.example`, `requirements.txt` y este esqueleto de README, a partir de un brief de diseño escrito por la founder.
+- **Buscador de normas (RAG):** Claude Code escribió `ai/normas.py`, que divide las normas por artículo y se queda con el texto vigente cuando SPIJ trae versiones anteriores, y `ai/rag.py` (embeddings y ChromaDB). La founder eligió las normas.
 
 ## Fuentes de datos
 
@@ -70,10 +80,11 @@ Las dos fuentes de publicaciones tienen **rangos de fechas distintos**; el detal
 app/              # interfaz en Streamlit
 ai/               # prompts, esquemas Pydantic, RAG y la única llamada a Claude (ai/llm.py)
 scraper/          # lectura de publicaciones de El Peruano
-data/normas/      # textos legales (exportados del SPIJ)
+data/normas/      # textos legales (exportados del SPIJ) y su índice de búsqueda (indice/)
 data/publicaciones/  # inaplicaciones con efectos generales publicadas en El Peruano
 docs/             # capturas y diagrama
 docs/research/    # notas de las 3 conversaciones con usuarios
+tests/            # pruebas del semáforo y de la lectura de normas
 notebooks/        # exploración
 ```
 
