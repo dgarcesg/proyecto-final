@@ -14,12 +14,13 @@ Uso (desde la raíz del repo; necesita ANTHROPIC_API_KEY en .env y cuesta unos c
 
 from __future__ import annotations
 
+import re
 import sys
 import unicodedata
 from dataclasses import dataclass
 from datetime import date
 
-from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo, textos
+from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo
 from ai.schemas import Evaluacion, EvaluacionesLLM, ExtraccionNota
 
 
@@ -38,9 +39,19 @@ def _normalizar(texto: str) -> str:
 
 
 def cita_verificada(fragmento: str, articulos: list[rag.ArticuloRecuperado]) -> bool:
-    """¿El fragmento que citó Claude está, palabra por palabra, en algún artículo recuperado?"""
+    """¿El fragmento que citó Claude está, palabra por palabra, en alguno de estos artículos?"""
     buscado = _normalizar(fragmento)
     return len(buscado) >= 15 and any(buscado in _normalizar(a.texto) for a in articulos)
+
+
+def verificar(norma: str, fragmento: str) -> bool:
+    """¿La norma citada existe en el corpus y la frase está en ESE artículo?"""
+    # "D.Leg. 1246, art. 5.1 a)" -> "D.Leg. 1246, art. 5" (las citas del corpus son por artículo)
+    cita = re.sub(r"(, art\. [\w-]+?)(?:\.\d+.*|\s.*)$", r"\1", norma.strip())
+    try:
+        return cita_verificada(fragmento, [rag.articulo_completo(cita)])
+    except KeyError:  # Claude citó una norma o un artículo que no está en data/normas/
+        return False
 
 
 def analizar(transcripcion: str, hoy: date | None = None) -> Resultado:
@@ -54,7 +65,7 @@ def analizar(transcripcion: str, hoy: date | None = None) -> Resultado:
     if not extraccion.requisitos:
         return Resultado(texto, extraccion, [], consumo)
 
-    base, por_requisito = rag.contexto_legal(extraccion.requisitos)
+    base, por_requisito = rag.contexto_legal(extraccion.requisitos, extraccion.giro)
     medidas = semaforo.cargar_medidas()  # la tabla completa, para decidir el rojo
     candidatas = buscador_medidas.medidas_relacionadas(extraccion.requisitos, extraccion.distrito)
     respuesta = llm.preguntar(
@@ -63,12 +74,11 @@ def analizar(transcripcion: str, hoy: date | None = None) -> Resultado:
         esfuerzo="medium", max_tokens=16000, consumo=consumo, nombre="evaluación",
     )
 
-    recuperados = base + [a for arts in por_requisito.values() for a in arts]
-    recuperados.append(rag.articulo_completo(textos.CITA_ART_8))  # la que se cita en los rojos
     evaluaciones = []
     for ev in respuesta.evaluaciones:
         final = semaforo.decidir(ev, extraccion.distrito, medidas, hoy)
-        final.cita_verificada = cita_verificada(ev.fragmento_usado, recuperados)
+        for cita in final.base_legal:
+            cita.verificada = verificar(cita.norma, cita.fragmento)
         evaluaciones.append(final)
     return Resultado(texto, extraccion, evaluaciones, consumo)
 
@@ -81,7 +91,8 @@ if __name__ == "__main__":
     print(f"Distrito: {r.extraccion.distrito} | Giro: {r.extraccion.giro}")
     for e in r.evaluaciones:
         print(f"\n[{e.color.upper()}] {e.requisito}")
-        print(f"   {e.norma_citada}  (cita verificada: {'sí' if e.cita_verificada else 'no'})")
+        for c in e.base_legal:
+            print(f"   {c.norma}  (cita verificada: {'sí' if c.verificada else 'no'}): {c.fragmento[:90]}")
         if e.publicacion:
             print(f"   Publicación: {e.publicacion.numero_resolucion} ({e.publicacion.distrito}),"
                   f" surte efecto desde {e.surte_efecto_desde}")

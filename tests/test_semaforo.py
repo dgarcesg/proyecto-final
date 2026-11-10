@@ -27,7 +27,7 @@ HOY = date(2026, 11, 10)
 def evaluacion(id_medida, color="verde"):
     return EvaluacionLLM(
         requisito="requisito", medida_publicada_id=id_medida, tramite_medida=None, color_sugerido=color,
-        norma_citada="", fragmento_usado="", explicacion_simple="",
+        base_legal=[], explicacion_simple="",
     )
 
 
@@ -92,7 +92,8 @@ def test_texto_fijo_del_rojo_y_cita_del_art_8_3():
         "distrito de La Victoria (Res. 0000-2026/SEL-INDECOPI (ficticia), publicada el 08/11/2026). "
         "Desde el 09/11/2026 la municipalidad no puede exigírtela (art. 8.3 del D.Leg. 1256)."
     )
-    assert d.norma_citada == "D.Leg. 1256, art. 8" and d.fragmento_usado.startswith("La inaplicación con efectos generales")
+    assert d.base_legal[0].norma == "D.Leg. 1256, art. 8"
+    assert d.base_legal[0].fragmento.startswith("La inaplicación con efectos generales")
 
 
 def test_texto_del_precedente_con_el_tramite_copiado_de_la_medida():

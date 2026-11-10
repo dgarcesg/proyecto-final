@@ -12,7 +12,7 @@ from datetime import date
 
 from ai import analisis, llm
 from ai.rag import ArticuloRecuperado
-from ai.schemas import EvaluacionesLLM, EvaluacionLLM, ExtraccionNota
+from ai.schemas import CitaNorma, EvaluacionesLLM, EvaluacionLLM, ExtraccionNota
 
 
 def test_anonimizar_reemplaza_datos_personales():
@@ -48,24 +48,31 @@ def test_z_flujo_completo_con_claude_simulado():
         assert "2567628-1#2" in mensaje  # las medidas publicadas llegan al prompt
         assert 'cita="TUO de la Ley 28976, art. 7"' in mensaje  # y los artículos base también
         assert 'cita="D.Leg. 1246, art. 5"' in mensaje
+        assert 'cita="Ley 31866, art. único"' in mensaje  # es una bodega
         return EvaluacionesLLM(evaluaciones=[
             EvaluacionLLM(requisito="solo puedo atender de 6 de la mañana a 11 de la noche",
                           medida_publicada_id="2567628-1#2", tramite_medida=None, color_sugerido="ambar",
-                          norma_citada="D.Leg. 1256, art. 8", fragmento_usado="dispone su inaplicación con efectos generales",
+                          base_legal=[CitaNorma(norma="D.Leg. 1256, art. 8",
+                                                fragmento="dispone su inaplicación con efectos generales")],
                           explicacion_simple="..."),
             EvaluacionLLM(requisito="croquis de ubicación del local",
                           medida_publicada_id="INDECOPI:0482-2024/SEL-INDECOPI#1",
                           tramite_medida="Renovación del Certificado de Seguridad de Defensa Civil", color_sugerido="ambar",
-                          norma_citada="TUO de la Ley 28976, art. 7",
-                          fragmento_usado="serán exigibles como máximo, los siguientes requisitos",
+                          base_legal=[CitaNorma(norma="TUO de la Ley 28976, art. 7",
+                                                fragmento="serán exigibles como máximo, los siguientes requisitos")],
                           explicacion_simple="..."),
             EvaluacionLLM(requisito="copia de mi DNI", medida_publicada_id=None, tramite_medida=None, color_sugerido="ambar",
-                          norma_citada="D.Leg. 1246, art. 5",
-                          fragmento_usado="a) Copia del Documento Nacional de Identidad.",
+                          base_legal=[
+                              CitaNorma(norma="D.Leg. 1246, art. 5.1 a)",  # con literal: se verifica igual
+                                        fragmento="a) Copia del Documento Nacional de Identidad."),
+                              CitaNorma(norma="TUO de la Ley 28976, art. 7",  # frase de OTRO artículo
+                                        fragmento="a) Copia del Documento Nacional de Identidad."),
+                          ],
                           explicacion_simple="..."),
             EvaluacionLLM(requisito="solicitud con declaración jurada con mi número de RUC",
                           medida_publicada_id=None, tramite_medida=None, color_sugerido="verde",
-                          norma_citada="TUO de la Ley 28976, art. 7", fragmento_usado="texto inventado por el modelo",
+                          base_legal=[CitaNorma(norma="TUO de la Ley 28976, art. 7",
+                                                fragmento="texto inventado por el modelo")],
                           explicacion_simple="..."),
         ])
 
@@ -83,11 +90,13 @@ def test_z_flujo_completo_con_claude_simulado():
     assert colores == ["rojo", "ambar", "ambar", "verde"]
     assert r.evaluaciones[0].surte_efecto_desde == date(2026, 10, 26)  # día siguiente de la publicación
     assert r.evaluaciones[0].texto_publicacion.startswith("INDECOPI declaró esta medida")
-    assert r.evaluaciones[0].cita_verificada  # en rojo se cita el art. 8.3 del D.Leg. 1256
-    assert "el trámite “Renovación del Certificado de Seguridad de Defensa Civil”" in r.evaluaciones[1].texto_publicacion
-    assert r.evaluaciones[1].cita_verificada
-    assert r.evaluaciones[2].cita_verificada
-    assert not r.evaluaciones[3].cita_verificada  # la frase no está en la norma
+    rojo, croquis, dni, solicitud = r.evaluaciones
+    # en rojo, la primera base legal es el art. 8.3 del D.Leg. 1256 (y no se repite el art. 8)
+    assert [c.norma for c in rojo.base_legal] == ["D.Leg. 1256, art. 8"] and rojo.base_legal[0].verificada
+    assert "el trámite “Renovación del Certificado de Seguridad de Defensa Civil”" in croquis.texto_publicacion
+    assert croquis.base_legal[0].verificada
+    assert [c.verificada for c in dni.base_legal] == [True, False]  # la frase no está en el art. 7
+    assert not solicitud.base_legal[0].verificada  # la frase no está en la norma
 
 
 if __name__ == "__main__":

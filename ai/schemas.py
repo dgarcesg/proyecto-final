@@ -52,6 +52,19 @@ class ExtraccionNota(BaseModel):
     requisitos: list[str] = Field(description="Cada cosa que le pidieron, tal como la dijo el usuario")
 
 
+class CitaNorma(BaseModel):
+    """Una norma que sustenta la evaluación, con la frase exacta que se usó."""
+
+    norma: str = Field(description="Norma y artículo exactos, como en el atributo 'cita' del artículo")
+    fragmento: str = Field(description="Frase copiada palabra por palabra de ese artículo")
+
+
+class CitaVerificada(CitaNorma):
+    verificada: bool = Field(
+        default=False, description="El código comprobó que la frase está, palabra por palabra, en ese artículo",
+    )
+
+
 class EvaluacionLLM(BaseModel):
     """Paso 4: evaluación de un requisito con las normas recuperadas por el RAG."""
 
@@ -67,8 +80,7 @@ class EvaluacionLLM(BaseModel):
     color_sugerido: Literal["ambar", "verde"] = Field(
         description="ambar: posible barrera según la Ley Marco o el TUO de la LPAG; verde: se lo pueden pedir"
     )
-    norma_citada: str = Field(description="Norma y artículo en que se basa la evaluación")
-    fragmento_usado: str = Field(description="Cita textual del fragmento recuperado que sustenta la evaluación")
+    base_legal: list[CitaNorma] = Field(description="De 1 a 3 normas que sustentan la evaluación, la principal primero")
     explicacion_simple: str = Field(description="Explicación en lenguaje simple para el emprendedor")
 
 
@@ -85,16 +97,11 @@ class Evaluacion(BaseModel):
 
     requisito: str
     color: Literal["rojo", "ambar", "verde"]
-    norma_citada: str
-    fragmento_usado: str
+    base_legal: list[CitaVerificada] = Field(description="Normas que sustentan la evaluación, la principal primero")
     explicacion_simple: str
     publicacion: Optional[MedidaPublicada] = None
     surte_efecto_desde: Optional[date] = None
     texto_publicacion: str = Field(
         default="",
         description="Texto legal fijo sobre la publicación (ai/textos.py); en rojo reemplaza la explicación de Claude",
-    )
-    cita_verificada: bool = Field(
-        default=False,
-        description="El código comprobó que el fragmento citado está, palabra por palabra, en las normas recuperadas",
     )

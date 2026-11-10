@@ -13,7 +13,7 @@ requisito queda ÁMBAR: hay un precedente, pero no una inaplicación que se pued
 esa ventanilla.
 
 En ambos casos, el texto sobre la publicación no lo escribe Claude: es una plantilla fija de
-la founder (ai/textos.py). En rojo, además, la norma citada pasa a ser el art. 8.3 del D.Leg. 1256.
+la founder (ai/textos.py). En rojo, además, la primera norma citada pasa a ser el art. 8.3 del D.Leg. 1256.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from ai import textos
-from ai.schemas import Evaluacion, EvaluacionLLM, MedidaPublicada
+from ai.schemas import CitaVerificada, Evaluacion, EvaluacionLLM, MedidaPublicada
 
 TABLA = Path(__file__).resolve().parent.parent / "data" / "publicaciones" / "publicaciones.json"
 
@@ -92,7 +92,8 @@ def decidir(
     """Convierte la evaluación de Claude en la evaluación final que ve el usuario."""
     hoy = hoy or date.today()
     medida = medidas.get(ev.medida_publicada_id or "")  # si Claude inventa un id, no existe
-    norma, fragmento, texto = ev.norma_citada, ev.fragmento_usado, ""
+    base_legal = [CitaVerificada(**c.model_dump()) for c in ev.base_legal]
+    texto = ""
 
     if medida:
         desde = surte_efecto_desde(medida)
@@ -100,7 +101,8 @@ def decidir(
         if motivo is None:
             color = "rojo"
             texto = textos.texto_rojo(medida, desde, distrito_usuario)  # texto fijo de la founder
-            norma, fragmento = textos.CITA_ART_8, textos.FRAGMENTO_ART_8_3
+            art_8_3 = CitaVerificada(norma=textos.CITA_ART_8, fragmento=textos.FRAGMENTO_ART_8_3)
+            base_legal = [art_8_3] + [c for c in base_legal if c.norma != textos.CITA_ART_8]
         else:
             color = "ambar"  # hay precedente publicado, pero no una inaplicación exigible aquí
             texto = textos.texto_ambar(medida, motivo, desde, ev.tramite_medida, distrito_usuario)
@@ -110,8 +112,7 @@ def decidir(
     return Evaluacion(
         requisito=ev.requisito,
         color=color,
-        norma_citada=norma,
-        fragmento_usado=fragmento,
+        base_legal=base_legal,
         explicacion_simple=ev.explicacion_simple,
         publicacion=medida,
         surte_efecto_desde=surte_efecto_desde(medida) if medida else None,

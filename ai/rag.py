@@ -178,9 +178,17 @@ def buscar(requisito: str, k: int = 3) -> list[ArticuloRecuperado]:
     return resultado
 
 
-def contexto_legal(requisitos: list[str], k: int = 3) -> tuple[list[ArticuloRecuperado], dict[str, list[ArticuloRecuperado]]]:
+# Para bodegas, además: el régimen de licencia provisional de la Ley 30877, modificada por la Ley 31866.
+ARTICULOS_BODEGA = ["Ley 31866, art. único"]
+
+
+def contexto_legal(
+    requisitos: list[str], giro: str | None = None, k: int = 3,
+) -> tuple[list[ArticuloRecuperado], dict[str, list[ArticuloRecuperado]]]:
     """Lo que recibe Claude: (artículos base, {requisito: artículos encontrados})."""
     base = articulos_base()
+    if giro and "bodega" in giro.lower():
+        base += [articulo_completo(c) for c in ARTICULOS_BODEGA]
     citas_base = {a.cita for a in base}
     por_requisito = {
         req: [a for a in buscar(req, k + len(citas_base)) if a.cita not in citas_base][:k]

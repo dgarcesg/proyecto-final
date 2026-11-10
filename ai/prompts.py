@@ -79,10 +79,14 @@ de transporte público"). Si el texto no lo dice o es una restricción general, 
 dudas serias de que pueda (por ejemplo, porque no está entre los requisitos máximos del \
 art. 7 de la Ley Marco o porque es documentación prohibida de solicitar). "verde" si la \
 norma permite pedirlo.
-- norma_citada: la norma y el artículo exactos, tal como aparecen en el atributo "cita" de los \
-artículos de arriba (por ejemplo, "TUO de la Ley 28976, art. 7").
-- fragmento_usado: una frase copiada palabra por palabra del artículo citado, la que sustenta \
-tu evaluación. No la resumas ni la cambies.
+- base_legal: de 1 a 3 normas que sustentan tu evaluación, la principal primero. Incluye todas \
+las que apliquen de los artículos de arriba (por ejemplo, para un mismo documento puede haber \
+una prohibición en el D.Leg. 1246 y otra en el TUO de la Ley 27444; si el negocio es una bodega, \
+revisa también el régimen de la Ley 31866). Para cada una:
+  * norma: la norma y el artículo exactos, tal como aparecen en el atributo "cita" (por \
+ejemplo, "TUO de la Ley 28976, art. 7"). No agregues numerales ni literales a la cita.
+  * fragmento: una frase copiada palabra por palabra de ese artículo. No la resumas ni la cambies.
+  No cites una norma que no sustente de verdad la evaluación solo por completar.
 - explicacion_simple: 2 o 3 frases para el emprendedor: qué dice la norma y qué significa para \
 él. Si elegiste una medida publicada, menciona qué declaró INDECOPI y en qué resolución; no \
 digas si ya es exigible en su distrito, eso lo calcula el sistema."""
