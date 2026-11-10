@@ -21,6 +21,16 @@ from pydantic import ValidationError
 
 from ai.schemas import MedidaPublicada
 from scraper import revision
+from scraper.elperuano import DISTRITOS_LIMA, sin_tildes
+from scraper.fuera_de_lima import es_referencia
+
+DISTRITOS_LIMA_NORMALIZADOS = {sin_tildes(d) for d in DISTRITOS_LIMA} | {"lima (metropolitana)"}
+
+
+def fuera_de_lima(fila: dict) -> bool:
+    """Referencia si la founder lo anotó o si el distrito no es de Lima Metropolitana."""
+    distrito = " ".join(sin_tildes(fila.get("distrito_lima", "")).split())
+    return es_referencia(fila) or distrito not in DISTRITOS_LIMA_NORMALIZADOS
 
 SALIDA = revision.CARPETA / "publicaciones.json"
 
@@ -58,6 +68,7 @@ def main() -> None:
                 fecha_publicacion=leer_fecha(f["fecha_publicacion"]),
                 url_el_peruano=f["url_el_peruano"],
                 efectos_generales=f.get("efectos_generales", "").strip().lower() in SI,
+                referencia_fuera_de_lima=fuera_de_lima(f),
                 estado=(f.get("estado") or "vigente").strip(),
                 notas=f.get("notas", ""),
             ))

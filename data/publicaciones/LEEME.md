@@ -17,12 +17,16 @@ Esta carpeta alimenta el **semáforo rojo**. Un requisito sale en rojo solo si c
 
 1. **Scraper** de El Peruano (sin IA: lee los campos rotulados de cada resolución).
 2. **Listado INDECOPI**: agrega las medidas que el scraper no trajo.
-3. **Revisión de la founder**: abre `publicaciones_para_revisar.csv` en Excel y llena las columnas de la derecha. Si se vuelven a correr los pasos 1 y 2, **lo ya revisado se conserva**.
-4. **Carga** ([`scraper/cargar_revision.py`](../../scraper/cargar_revision.py)): valida las filas marcadas y escribe `publicaciones.json`, que es la tabla que usa la app.
+3. **Revisión de la founder** en Excel: `python -m scraper.excel_revision exportar` genera `publicaciones_para_revisar.xlsx` (filtros, listas desplegables, columnas a llenar en amarillo) e `importar` pasa lo marcado al CSV. Si se vuelven a correr los pasos 1 y 2, **lo ya revisado se conserva**.
+4. **Fuera de Lima** ([`scraper/fuera_de_lima.py`](../../scraper/fuera_de_lima.py)): replica el criterio de la founder en las municipalidades que no son de Lima Metropolitana (Callao, Lima Provincias y otros departamentos). Pone el lugar en `distrito_lima` y la nota *"No distrito de Lima, sino [departamento]. Mantener como referencia"*. Esas medidas se quedan como **referencia**: pueden mostrarse como precedente (ámbar), pero **nunca dan rojo**.
+5. **Carga** ([`scraper/cargar_revision.py`](../../scraper/cargar_revision.py)): valida las filas marcadas y escribe `publicaciones.json`, que es la tabla que usa la app.
 
 ```bash
 python -m scraper.elperuano --desde 2025-01-01 --hasta 2026-11-10
 python -m scraper.listado_indecopi
+python -m scraper.excel_revision exportar    # la founder revisa el .xlsx
+python -m scraper.excel_revision importar
+python -m scraper.fuera_de_lima
 python -m scraper.cargar_revision
 ```
 

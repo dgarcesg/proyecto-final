@@ -4,11 +4,13 @@ Un requisito es ROJO solo si Claude lo relacionó con una medida publicada y ade
   1. la founder marcó que esa publicación tiene efectos generales (arts. 8 y 9 del
      D.Leg. 1256, revisados caso por caso);
   2. la medida sigue vigente (la founder no la marcó como revocada ni ya modificada);
-  3. es de la misma municipalidad (distrito) donde el emprendedor hace su trámite;
+  3. es de una municipalidad de Lima Metropolitana (no una referencia de otro lugar) y
+     del mismo distrito donde el emprendedor hace su trámite;
   4. ya surte efecto: desde el día siguiente de su publicación en El Peruano (art. 8.3).
 
-Si Claude la relacionó con una medida publicada pero falla 1, 3 o 4, el requisito queda
-ÁMBAR: hay un precedente, pero no una inaplicación que se pueda exigir en ventanilla.
+Si Claude la relacionó con una medida publicada pero falla alguna de esas condiciones, el
+requisito queda ÁMBAR: hay un precedente, pero no una inaplicación que se pueda exigir en
+esa ventanilla.
 """
 
 from __future__ import annotations
@@ -42,15 +44,27 @@ def surte_efecto_desde(medida: MedidaPublicada) -> date:
     return medida.fecha_publicacion + timedelta(days=1)
 
 
+# Formas de nombrar al Cercado / Municipalidad Metropolitana de Lima.
+_ALIAS_LIMA = {"lima (metropolitana)", "cercado de lima", "lima cercado", "cercado", "lima"}
+
+
+def _distrito_canonico(nombre: str | None) -> str:
+    n = _normalizar(nombre)
+    n = n.removeprefix("distrito de ").removeprefix("municipalidad distrital de ")
+    return "lima" if n in _ALIAS_LIMA else n
+
+
 def mismo_distrito(a: str | None, b: str | None) -> bool:
-    a, b = _normalizar(a), _normalizar(b)
-    return bool(a) and bool(b) and (a == b or a in b or b in a)
+    """Comparación exacta (sin tildes ni mayúsculas): 'Santa' NO es 'Santa Anita'."""
+    a, b = _distrito_canonico(a), _distrito_canonico(b)
+    return bool(a) and a == b
 
 
 def es_rojo(medida: MedidaPublicada, distrito_usuario: str | None, hoy: date) -> bool:
     return (
         medida.efectos_generales
         and medida.estado == "vigente"
+        and not medida.referencia_fuera_de_lima
         and mismo_distrito(medida.distrito, distrito_usuario)
         and hoy >= surte_efecto_desde(medida)
     )

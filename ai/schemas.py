@@ -34,6 +34,10 @@ class MedidaPublicada(BaseModel):
     fecha_publicacion: date = Field(description="Fecha de publicación en El Peruano")
     url_el_peruano: str = Field(default="", description="Vacío si la medida viene solo del listado INDECOPI")
     efectos_generales: bool = Field(description="Decisión legal de la founder en la revisión")
+    referencia_fuera_de_lima: bool = Field(
+        default=False,
+        description="Municipalidad fuera de Lima Metropolitana: solo sirve como precedente, nunca da rojo",
+    )
     estado: Literal["vigente", "revocada", "entidad_ya_modifico"] = "vigente"
     notas: str = ""
 

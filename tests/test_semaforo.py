@@ -57,6 +57,21 @@ def test_ambar_si_esta_revocada():
     assert color("PRUEBA#1", "La Victoria", medida=revocada) == "ambar"
 
 
+def test_distritos_homonimos_no_se_confunden():  # 'Santa' (Áncash) no es 'Santa Anita'
+    santa = MEDIDA.model_copy(update={"distrito": "Santa"})
+    assert color("PRUEBA#1", "Santa Anita", medida=santa) == "ambar"
+
+
+def test_cercado_y_metropolitana_son_el_mismo_distrito():
+    mml = MEDIDA.model_copy(update={"distrito": "Lima (Metropolitana)"})
+    assert color("PRUEBA#1", "Cercado de Lima", medida=mml) == "rojo"
+
+
+def test_referencia_fuera_de_lima_nunca_da_rojo():
+    callao = MEDIDA.model_copy(update={"distrito": "La Victoria", "referencia_fuera_de_lima": True})
+    assert color("PRUEBA#1", "La Victoria", medida=callao) == "ambar"
+
+
 def test_si_claude_inventa_un_id_no_hay_rojo():
     assert color("NO-EXISTE#9", "La Victoria") == "verde"
 

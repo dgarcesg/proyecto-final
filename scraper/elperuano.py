@@ -276,6 +276,10 @@ def sugerir_efectos_generales(tipos: list[str], tipo_acto: str, procedimiento: s
     return "revisar"
 
 
+# Errores de tipeo encontrados en las fuentes.
+ALIAS_DISTRITOS = {"megdalena del mar": "Magdalena del Mar"}
+
+
 def distrito_de_lima(entidad: str) -> str:
     """Si la entidad parece una municipalidad de Lima, devuelve el distrito. Si no, ''.
 
@@ -287,7 +291,10 @@ def distrito_de_lima(entidad: str) -> str:
         return "Lima (Metropolitana)"
     if "provincial" in ent:
         return ""
-    candidatos = [d for d in DISTRITOS_LIMA if re.search(rf"\bde {sin_tildes(d)}\b", ent)]
+    for error, correcto in ALIAS_DISTRITOS.items():
+        ent = ent.replace(error, sin_tildes(correcto))
+    # "de Miraflores", "del Rímac"
+    candidatos = [d for d in DISTRITOS_LIMA if re.search(rf"\bdel? {sin_tildes(d)}\b", ent)]
     return max(candidatos, key=len) if candidatos else ""
 
 
