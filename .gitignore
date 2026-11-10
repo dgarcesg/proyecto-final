@@ -40,3 +40,7 @@ desktop.ini
 .vscode/
 .idea/
 *.log
+
+# --- Copia en Excel para la revisión (la fuente de verdad es el CSV) ---
+data/publicaciones/publicaciones_para_revisar.xlsx
+~$*.xlsx
