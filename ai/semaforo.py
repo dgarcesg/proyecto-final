@@ -99,11 +99,11 @@ def decidir(
         motivo = motivo_no_rojo(medida, distrito_usuario, hoy)
         if motivo is None:
             color = "rojo"
-            texto = textos.texto_rojo(medida, desde)  # texto fijo de la founder
+            texto = textos.texto_rojo(medida, desde, distrito_usuario)  # texto fijo de la founder
             norma, fragmento = textos.CITA_ART_8, textos.FRAGMENTO_ART_8_3
         else:
             color = "ambar"  # hay precedente publicado, pero no una inaplicación exigible aquí
-            texto = textos.texto_ambar(medida, motivo, desde, ev.tramite_medida)
+            texto = textos.texto_ambar(medida, motivo, desde, ev.tramite_medida, distrito_usuario)
     else:
         color = ev.color_sugerido  # ámbar o verde: el esquema de Claude no permite rojo
 

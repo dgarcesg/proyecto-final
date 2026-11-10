@@ -88,9 +88,9 @@ def decision(id_medida, distrito, medida=MEDIDA, hoy=HOY, tramite=None):
 def test_texto_fijo_del_rojo_y_cita_del_art_8_3():
     d = decision("PRUEBA#1", "La Victoria")
     assert d.texto_publicacion == (
-        "INDECOPI declaró esta medida barrera burocrática ilegal con efectos generales (Res. "
-        "0000-2026/SEL-INDECOPI (ficticia), publicada el 08/11/2026). Desde el 09/11/2026 la "
-        "municipalidad no puede exigírtela (art. 8.3 del D.Leg. 1256)."
+        "INDECOPI declaró esta medida barrera burocrática ilegal con efectos generales para el "
+        "distrito de La Victoria (Res. 0000-2026/SEL-INDECOPI (ficticia), publicada el 08/11/2026). "
+        "Desde el 09/11/2026 la municipalidad no puede exigírtela (art. 8.3 del D.Leg. 1256)."
     )
     assert d.norma_citada == "D.Leg. 1256, art. 8" and d.fragmento_usado.startswith("La inaplicación con efectos generales")
 
@@ -98,7 +98,8 @@ def test_texto_fijo_del_rojo_y_cita_del_art_8_3():
 def test_texto_del_precedente_con_el_tramite_copiado_de_la_medida():
     con_tramite = MEDIDA.model_copy(update={"medida": "La exigencia de copia del DNI para el procedimiento “Permiso de operación”"})
     d = decision("PRUEBA#1", "Surquillo", medida=con_tramite, tramite="Permiso de operación")
-    assert d.texto_publicacion.startswith("No es una medida sujeta a inaplicación con efectos generales en tu distrito")
+    assert d.texto_publicacion.startswith(
+        "No es una medida sujeta a inaplicación con efectos generales en el distrito de Surquillo, pero")
     assert "para el trámite “Permiso de operación” de la Municipalidad Distrital de La Victoria" in d.texto_publicacion
 
 

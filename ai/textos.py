@@ -23,25 +23,26 @@ FRAGMENTO_ART_8_3 = (
 CITA_ART_8 = "D.Leg. 1256, art. 8"
 
 ROJO = (
-    "INDECOPI declaró esta medida {barrera} con efectos generales (Res. {resolucion}, publicada "
-    "el {publicada}). Desde el {desde} la municipalidad no puede exigírtela (art. 8.3 del D.Leg. 1256)."
+    "INDECOPI declaró esta medida {barrera} con efectos generales para {el_distrito} (Res. "
+    "{resolucion}, publicada el {publicada}). Desde el {desde} la municipalidad no puede "
+    "exigírtela (art. 8.3 del D.Leg. 1256)."
 )
 PRECEDENTE = (
-    "No es una medida sujeta a inaplicación con efectos generales en tu distrito, pero ha sido "
+    "No es una medida sujeta a inaplicación con efectos generales en {el_distrito}, pero ha sido "
     "declarada {barrera} para {tramite} de la {entidad}{lugar} mediante Res. {resolucion} "
     "(publicada el {publicada})."
 )
 SIN_EFECTOS_GENERALES = (
     "INDECOPI declaró esta medida {barrera} para {tramite} mediante Res. {resolucion} (publicada el "
-    "{publicada}), pero sin efectos generales: solo se inaplicó a quien la denunció."
+    "{publicada}), pero sin efectos generales en {el_distrito}: solo se inaplicó a quien la denunció."
 )
 NO_VIGENTE = (
     "INDECOPI declaró esta medida {barrera} mediante Res. {resolucion} (publicada el {publicada}), "
     "pero según nuestra revisión {estado}."
 )
 AUN_NO_SURTE_EFECTO = (
-    "INDECOPI declaró esta medida {barrera} con efectos generales (Res. {resolucion}, publicada el "
-    "{publicada}). Surte efecto desde el {desde} (art. 8.3 del D.Leg. 1256)."
+    "INDECOPI declaró esta medida {barrera} con efectos generales para {el_distrito} (Res. "
+    "{resolucion}, publicada el {publicada}). Surte efecto desde el {desde} (art. 8.3 del D.Leg. 1256)."
 )
 
 ESTADOS = {
@@ -82,20 +83,28 @@ def tramite(m: MedidaPublicada, sugerido: str | None) -> str:
     return "otro trámite"
 
 
-def _datos(m: MedidaPublicada, desde: date, tramite_sugerido: str | None) -> dict:
+def el_distrito(distrito_usuario: str | None) -> str:
+    """'el distrito de San Juan de Lurigancho' (el distrito de la consulta)."""
+    return f"el distrito de {distrito_usuario.strip()}" if (distrito_usuario or "").strip() else "tu distrito"
+
+
+def _datos(m: MedidaPublicada, desde: date, tramite_sugerido: str | None, distrito_usuario: str | None) -> dict:
     lugar = f" ({m.distrito})" if m.distrito and _normalizar(m.distrito) not in _normalizar(m.entidad) else ""
     return {
         "barrera": _barrera(m), "resolucion": m.numero_resolucion, "publicada": _fecha(m.fecha_publicacion),
         "desde": _fecha(desde), "entidad": m.entidad, "lugar": lugar,
         "tramite": tramite(m, tramite_sugerido), "estado": ESTADOS.get(m.estado, m.estado),
+        "el_distrito": el_distrito(distrito_usuario),
     }
 
 
-def texto_rojo(m: MedidaPublicada, desde: date) -> str:
-    return ROJO.format(**_datos(m, desde, None))
+def texto_rojo(m: MedidaPublicada, desde: date, distrito_usuario: str | None) -> str:
+    return ROJO.format(**_datos(m, desde, None, distrito_usuario))
 
 
-def texto_ambar(m: MedidaPublicada, motivo: str, desde: date, tramite_sugerido: str | None) -> str:
+def texto_ambar(
+    m: MedidaPublicada, motivo: str, desde: date, tramite_sugerido: str | None, distrito_usuario: str | None,
+) -> str:
     """Texto para una medida publicada que no da rojo, según el motivo (ai/semaforo.py)."""
     plantilla = {
         "otro_distrito": PRECEDENTE,
@@ -104,4 +113,4 @@ def texto_ambar(m: MedidaPublicada, motivo: str, desde: date, tramite_sugerido: 
         "no_vigente": NO_VIGENTE,
         "aun_no_surte_efecto": AUN_NO_SURTE_EFECTO,
     }[motivo]
-    return plantilla.format(**_datos(m, desde, tramite_sugerido))
+    return plantilla.format(**_datos(m, desde, tramite_sugerido, distrito_usuario))
