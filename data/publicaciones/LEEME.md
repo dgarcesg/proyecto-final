@@ -2,14 +2,27 @@
 
 Esta carpeta alimenta el **semáforo rojo**. Un requisito sale en rojo solo si coincide con una medida de `publicaciones.json` de **esa municipalidad**, que la founder marcó **con efectos generales** y **vigente**, y que ya surte efecto (desde el día siguiente de su publicación, art. 8.3 del D.Leg. 1256). La regla está en [`ai/semaforo.py`](../../ai/semaforo.py).
 
+## Dos fuentes, con rangos de fechas distintos
+
+| Fuente | Rango | Qué trae | Qué no trae |
+|---|---|---|---|
+| **Scraper de El Peruano** ([`scraper/elperuano.py`](../../scraper/elperuano.py)): búsqueda "barrera burocrática" en [busquedas.elperuano.pe](https://busquedas.elperuano.pe), sector INDECOPI, entidades municipales | **01/01/2025 – 10/11/2026** | Link a El Peruano, tipo de barrera (ilegal / carente de razonabilidad), norma cuestionada, sustento. Incluye comisiones regionales | Resoluciones cuya sumilla no contiene "barrera burocrática" |
+| **[Listado de INDECOPI de resoluciones con efectos generales](https://www.gob.pe/institucion/indecopi/informes-publicaciones/4292797-listado-de-resoluciones-con-efectos-generales_barreras-burocraticas)** ([`scraper/listado_indecopi.py`](../../scraper/listado_indecopi.py)), Excel en `fuentes/indecopi/` | **2017 – 06/11/2026** (la última publicación del archivo es del 25/10/2026) | Materia (p. ej., "Licencia de funcionamiento"), número y fecha de publicación | Link a El Peruano, tipo de barrera, norma cuestionada. No incluye las comisiones regionales ni lo publicado después de su corte |
+
+- Si una resolución está en **ambas**, no se duplica: queda la fila del scraper, con la fuente "El Peruano (scraper) y listado INDECOPI" y la materia del listado.
+- Para las medidas del listado, **`efectos_generales` = "sí" por defecto**, porque INDECOPI las publica como resoluciones con efectos generales (decisión de la founder). Igual se pueden cambiar.
+- Para el periodo en que se solapan (2025–2026), 45 resoluciones municipales están en ambas fuentes, 8 solo en el listado y 37 solo en el scraper (sobre todo de comisiones regionales y del 08/11/2026).
+
 ## Cómo se arma
 
-1. **Scraper** ([`scraper/elperuano.py`](../../scraper/elperuano.py)): busca "barrera burocrática" en [busquedas.elperuano.pe](https://busquedas.elperuano.pe) del 01/01/2025 al 10/11/2026, se queda con lo publicado por INDECOPI que involucra a una municipalidad y lee los campos rotulados de cada resolución. No usa IA.
-2. **Revisión de la founder**: abre `publicaciones_para_revisar.csv` en Excel y llena las columnas de la derecha.
-3. **Carga** ([`scraper/cargar_revision.py`](../../scraper/cargar_revision.py)): valida las filas marcadas y escribe `publicaciones.json`, que es la tabla que usa la app.
+1. **Scraper** de El Peruano (sin IA: lee los campos rotulados de cada resolución).
+2. **Listado INDECOPI**: agrega las medidas que el scraper no trajo.
+3. **Revisión de la founder**: abre `publicaciones_para_revisar.csv` en Excel y llena las columnas de la derecha. Si se vuelven a correr los pasos 1 y 2, **lo ya revisado se conserva**.
+4. **Carga** ([`scraper/cargar_revision.py`](../../scraper/cargar_revision.py)): valida las filas marcadas y escribe `publicaciones.json`, que es la tabla que usa la app.
 
 ```bash
 python -m scraper.elperuano --desde 2025-01-01 --hasta 2026-11-10
+python -m scraper.listado_indecopi
 python -m scraper.cargar_revision
 ```
 
@@ -19,6 +32,7 @@ python -m scraper.cargar_revision
 |---|---|
 | `busqueda_elperuano.csv` | Todos los resultados del buscador (cualquier sector) |
 | `fuentes/elperuano/<id>.html` | Texto de cada publicación de INDECOPI, tal como lo sirve El Peruano |
+| `fuentes/indecopi/4292797-resoluciones-con-efectos-generales.xlsx` | Listado oficial de INDECOPI, tal como se descargó de gob.pe |
 | `publicaciones_crudas.json` | Resoluciones que involucran a municipalidades, con sus campos leídos |
 | `publicaciones_para_revisar.csv` | Una fila por medida, para la revisión de la founder |
 | `publicaciones.json` | La tabla revisada que usa la app |

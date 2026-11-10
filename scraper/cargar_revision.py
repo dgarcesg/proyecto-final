@@ -13,28 +13,18 @@ Uso (desde la raíz del repo):
 
 from __future__ import annotations
 
-import csv
 import json
 import sys
 from datetime import date, datetime
-from pathlib import Path
 
 from pydantic import ValidationError
 
 from ai.schemas import MedidaPublicada
+from scraper import revision
 
-CARPETA = Path(__file__).resolve().parent.parent / "data" / "publicaciones"
-ENTRADA = CARPETA / "publicaciones_para_revisar.csv"
-SALIDA = CARPETA / "publicaciones.json"
+SALIDA = revision.CARPETA / "publicaciones.json"
 
 SI = {"si", "sí", "x", "1", "true", "s"}
-
-
-def leer_csv(ruta: Path) -> list[dict]:
-    """Lee el CSV aunque Excel lo haya guardado con ';' en vez de ','."""
-    texto = ruta.read_text(encoding="utf-8-sig")
-    separador = ";" if texto.splitlines()[0].count(";") > texto.splitlines()[0].count(",") else ","
-    return list(csv.DictReader(texto.splitlines(), delimiter=separador))
 
 
 def leer_fecha(valor: str) -> date:
@@ -48,7 +38,7 @@ def leer_fecha(valor: str) -> date:
 
 
 def main() -> None:
-    filas = leer_csv(ENTRADA)
+    filas = revision.leer_csv()
     medidas, errores = [], []
     for n, f in enumerate(filas, start=2):  # fila 1 = encabezados
         if f.get("usar_en_app", "").strip().lower() not in SI:
@@ -56,10 +46,12 @@ def main() -> None:
         try:
             medidas.append(MedidaPublicada(
                 id_medida=f["id_medida"],
+                fuente=f.get("fuente", ""),
                 numero_resolucion=f["numero_resolucion"],
                 organo=f["organo"],
                 entidad=f["entidad"],
                 distrito=f["distrito_lima"],
+                materia=f.get("materia", ""),
                 tipo=f["tipo"],
                 medida=f["medida"],
                 norma_cuestionada=f["norma_cuestionada"],

@@ -19,16 +19,20 @@ from pydantic import BaseModel, Field
 class MedidaPublicada(BaseModel):
     """Una medida declarada barrera burocrática y publicada en El Peruano."""
 
-    id_medida: str = Field(description="ID de El Peruano + número de medida, p. ej. '2461162-1#3'")
+    id_medida: str = Field(
+        description="ID de la medida: '2461162-1#3' (El Peruano) o 'INDECOPI:0549-2026/SEL-INDECOPI#1' (listado)"
+    )
+    fuente: str = Field(default="", description="El Peruano (scraper), listado INDECOPI o ambas")
     numero_resolucion: str
-    organo: Literal["CEB", "SEL"]
+    organo: Literal["CEB", "SEL", "SDC"]  # SDC: antigua Sala de Defensa de la Competencia
     entidad: str
     distrito: str = Field(description="Distrito de Lima, confirmado por la founder")
-    tipo: str = Field(description="ilegal y/o carente de razonabilidad")
+    materia: str = Field(default="", description="Materia según el listado INDECOPI")
+    tipo: str = Field(default="", description="ilegal y/o carente de razonabilidad (el listado no lo indica)")
     medida: str = Field(description="Texto de la barrera declarada, tal como se publicó")
     norma_cuestionada: str = ""
     fecha_publicacion: date = Field(description="Fecha de publicación en El Peruano")
-    url_el_peruano: str
+    url_el_peruano: str = Field(default="", description="Vacío si la medida viene solo del listado INDECOPI")
     efectos_generales: bool = Field(description="Decisión legal de la founder en la revisión")
     estado: Literal["vigente", "revocada", "entidad_ya_modifico"] = "vigente"
     notas: str = ""

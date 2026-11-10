@@ -1,18 +1,19 @@
 # App
-streamlit>=1.40          # st.audio_input para grabar la nota de voz en el navegador
-python-dotenv            # lee ANTHROPIC_API_KEY desde .env en local
+streamlit==1.67.0         # st.audio_input para grabar la nota de voz en el navegador
+python-dotenv==1.2.4           # lee ANTHROPIC_API_KEY desde .env en local
 
 # IA
-anthropic                # Claude Opus 5.5 (salidas estructuradas)
-pydantic>=2              # esquemas de las salidas estructuradas
-faster-whisper           # voz a texto (sesión 13)
-sentence-transformers    # embeddings multilingual-e5-small (sesión 08)
-chromadb                 # base vectorial del RAG (sesión 08)
+anthropic==2.7.0               # Claude Opus 5.5 (salidas estructuradas)
+pydantic==2.14.3             # esquemas de las salidas estructuradas
+faster-whisper==1.2.1          # voz a texto (sesión 13)
+sentence-transformers==6.2.0   # embeddings multilingual-e5-small (sesión 08)
+chromadb==1.5.9                # base vectorial del RAG (sesión 08)
 
 # Datos e ingesta
-requests                 # scraping de El Peruano (sesión 03)
-beautifulsoup4           # parseo del HTML de El Peruano y del SPIJ
-pypdf                    # texto de publicaciones descargadas en PDF
+requests==2.34.2                # scraping de El Peruano (sesión 03)
+beautifulsoup4==4.15.0          # parseo del HTML de El Peruano y del SPIJ
+pypdf==7.0.1                   # texto de publicaciones descargadas en PDF
+openpyxl==3.1.5                # lee el listado de INDECOPI en Excel
 
 # Escrito
-fpdf2                    # genera el escrito en PDF (solo semáforo rojo)
+fpdf2==2.9.0                   # genera el escrito en PDF (solo semáforo rojo)

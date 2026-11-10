@@ -30,7 +30,10 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
+from scraper import revision
+
 BASE = "https://busquedas.elperuano.pe"
+FUENTE_SCRAPER = "El Peruano (scraper)"
 CARPETA = Path(__file__).resolve().parent.parent / "data" / "publicaciones"
 CARPETA_HTML = CARPETA / "fuentes" / "elperuano"
 
@@ -362,7 +365,7 @@ def guardar_csv(ruta: Path, filas: list[dict]) -> None:
         escritor.writerows(filas)
 
 
-def filas_para_revisar(resoluciones: list[dict]) -> list[dict]:
+def filas_para_revisar(resoluciones: list[dict], fuente: str) -> list[dict]:
     """Una fila por medida (una resolución puede declarar varias barreras).
 
     Las últimas columnas están vacías: las llena la founder en Excel.
@@ -372,6 +375,7 @@ def filas_para_revisar(resoluciones: list[dict]) -> list[dict]:
         for i, medida in enumerate(r["medidas"] or [""], start=1):
             filas.append({
                 "id_medida": f"{r['id']}#{i}",
+                "fuente": fuente,
                 "id": r["id"],
                 "numero_resolucion": r["numero_resolucion"],
                 "organo": r["organo"],
@@ -430,8 +434,16 @@ def main() -> None:
     (CARPETA / "publicaciones_crudas.json").write_text(
         json.dumps(resoluciones, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    filas = filas_para_revisar(resoluciones)
-    guardar_csv(CARPETA / "publicaciones_para_revisar.csv", filas)
+    # Se conserva lo que la founder ya revisó y las filas de otras fuentes (listado INDECOPI).
+    fuente = f"{FUENTE_SCRAPER} ({desde:%d/%m/%Y}–{hasta:%d/%m/%Y})"
+    anteriores = revision.leer_csv()
+    filas = revision.conservar_revision(filas_para_revisar(resoluciones, fuente), anteriores)
+    ids = {f["id_medida"] for f in filas}
+    otras = [f for f in anteriores
+             if f["id_medida"] not in ids and not f.get("fuente", "").startswith(FUENTE_SCRAPER)]
+    revision.guardar_csv(filas + otras)
+    if otras:
+        print(f"   (se conservaron {len(otras)} filas de otras fuentes)")
 
     en_lima = [r for r in resoluciones if r["distrito_lima"]]
     print("3) Resumen")
