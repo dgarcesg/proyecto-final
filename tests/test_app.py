@@ -59,6 +59,7 @@ def test_flujo_de_la_app_con_el_audio_de_ejemplo():
     assert dni and "Decreto Legislativo 1246, Aprueba diversas medidas de simplificación administrativa" in dni[0]
     assert "*Artículo 5.- Prohibición de la exigencia de documentación*" in dni[0]
     assert [x.label for x in app.expander] == ["Cómo funciona"]  # la base legal no es desplegable
+    assert app.get("download_button"), "falta el botón del escrito en PDF"  # hay un rojo
     assert app.session_state.consultas == 1
 
 

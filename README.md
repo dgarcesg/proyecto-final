@@ -45,6 +45,7 @@ python -m tests.test_voz        # transcripción (carga Whisper; ~20 s)
 python -m tests.test_analisis   # flujo completo con Claude simulado (no gasta crédito)
 python -m tests.test_app        # la app de Streamlit con el audio de ejemplo y Claude simulado (~1-2 min)
 python -m tests.test_citas      # cómo se arma cada cita de la base legal (nombre completo, numeral y literal)
+python -m tests.test_escrito    # el escrito en PDF para el rojo (resolución, art. 8.3 y 34.1 del D.Leg. 1256)
 python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 ```
 

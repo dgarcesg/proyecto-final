@@ -25,7 +25,7 @@ sys.path.insert(0, str(RAIZ))  # para poder importar ai/ al correr "streamlit ru
 
 import streamlit as st  # noqa: E402
 
-from ai import analisis, citas, llm, medidas, rag, textos, voz  # noqa: E402
+from ai import analisis, citas, escrito, llm, medidas, rag, textos, voz  # noqa: E402
 
 st.set_page_config(page_title="TUPA bajo la lupa", page_icon="🔎", layout="centered")
 
@@ -150,8 +150,14 @@ def mostrar_resultado(r: analisis.Resultado, segundos: float) -> None:
     for e in sorted(r.evaluaciones, key=lambda e: ORDEN[e.color]):
         mostrar_evaluacion(e)
     if conteo["rojo"]:
-        st.info("En los requisitos en rojo, la municipalidad no puede exigírtelos. Puedes presentar un "
-                "escrito citando la resolución de INDECOPI.")
+        st.info("La municipalidad no puede exigirte los requisitos en rojo. Descarga este escrito, "
+                "completa a mano tu nombre, DNI y domicilio, y preséntalo en mesa de partes.")
+        st.download_button(
+            "📄 Descargar escrito para la municipalidad (PDF)",
+            data=escrito.generar_pdf(r.evaluaciones, ex),
+            file_name="escrito_barrera_burocratica.pdf", mime="application/pdf", type="primary",
+            on_click="ignore",  # descargar no vuelve a correr la app
+        )
     st.caption(f"Consulta procesada en {segundos:.0f} s · costo aproximado US$ {r.consumo.costo_usd:.2f}")
 
 
