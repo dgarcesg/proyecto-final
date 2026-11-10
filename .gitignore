@@ -1,0 +1,42 @@
+# --- Secretos: NUNCA se suben ---
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# --- Índices y modelos que se generan al correr la app ---
+chroma/
+chroma_db/
+.cache/
+modelos/
+
+# --- Audios: la app no guarda notas de voz (privacidad) ---
+*.wav
+*.mp3
+*.m4a
+*.ogg
+*.webm
+# Excepción: audios de prueba grabados por la founder con su propia voz
+!data/demo/*.wav
+!data/demo/*.m4a
+
+# --- Escritos PDF generados en pruebas ---
+salidas/
+
+# --- Sistema operativo / editores ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log

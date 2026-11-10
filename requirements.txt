@@ -1,0 +1,18 @@
+# App
+streamlit>=1.40          # st.audio_input para grabar la nota de voz en el navegador
+python-dotenv            # lee ANTHROPIC_API_KEY desde .env en local
+
+# IA
+anthropic                # Claude Opus 5.5 (salidas estructuradas)
+pydantic>=2              # esquemas de las salidas estructuradas
+faster-whisper           # voz a texto (sesión 13)
+sentence-transformers    # embeddings multilingual-e5-small (sesión 08)
+chromadb                 # base vectorial del RAG (sesión 08)
+
+# Datos e ingesta
+requests                 # scraping de El Peruano (sesión 03)
+beautifulsoup4           # parseo del HTML de El Peruano y del SPIJ
+pypdf                    # texto de publicaciones descargadas en PDF
+
+# Escrito
+fpdf2                    # genera el escrito en PDF (solo semáforo rojo)
