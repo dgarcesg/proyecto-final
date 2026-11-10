@@ -85,3 +85,7 @@ class Evaluacion(BaseModel):
     explicacion_simple: str
     publicacion: Optional[MedidaPublicada] = None
     surte_efecto_desde: Optional[date] = None
+    cita_verificada: bool = Field(
+        default=False,
+        description="El código comprobó que el fragmento citado está, palabra por palabra, en las normas recuperadas",
+    )

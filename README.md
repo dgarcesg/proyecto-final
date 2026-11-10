@@ -42,6 +42,7 @@ Pruebas (no usan la API de Claude):
 python -m tests.test_semaforo   # regla del semáforo rojo
 python -m tests.test_normas     # división de las normas por artículo
 python -m tests.test_voz        # transcripción (carga Whisper; ~20 s)
+python -m tests.test_analisis   # flujo completo con Claude simulado (no gasta crédito)
 python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 ```
 
@@ -55,7 +56,7 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 |---|---|---|
 | Scraping y APIs | 03 | `scraper/` *(en construcción)* |
 | RAG: embeddings (multilingual-e5-small) + ChromaDB sobre las normas | 08 | [`ai/normas.py`](ai/normas.py), [`ai/rag.py`](ai/rag.py) |
-| LLM con salidas estructuradas | 08 | `ai/` *(en construcción)* |
+| LLM con salidas estructuradas (Claude Opus 5.5 + Pydantic) | 08 | [`ai/llm.py`](ai/llm.py), [`ai/prompts.py`](ai/prompts.py), [`ai/analisis.py`](ai/analisis.py) |
 | Voz a texto con Whisper (faster-whisper `small`, int8, en la misma computadora) | 13 | [`ai/voz.py`](ai/voz.py) |
 
 ## 9. Qué hizo el agente
@@ -65,6 +66,7 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 - **Estructura del repo:** Claude Code creó las carpetas, `.gitignore`, `.env.example`, `requirements.txt` y este esqueleto de README, a partir de un brief de diseño escrito por la founder.
 - **Buscador de normas (RAG):** Claude Code escribió `ai/normas.py`, que divide las normas por artículo y se queda con el texto vigente cuando SPIJ trae versiones anteriores, y `ai/rag.py` (embeddings y ChromaDB). La founder eligió las normas y decidió mantener los textos modificatorios de la Ley 28976 que trae SPIJ.
 - **Voz a texto:** Claude Code escribió `ai/voz.py` (Whisper en la misma computadora; el audio no se guarda) y generó un audio de ejemplo con la voz sintética de Windows y un caso inventado (`data/demo/`).
+- **Llamada a Claude:** Claude Code escribió `ai/llm.py` (la única llamada a la API, con anonimización de DNI, RUC, teléfonos y correos), los prompts (`ai/prompts.py`) y el flujo (`ai/analisis.py`). El código comprueba que la frase que cita Claude esté palabra por palabra en la norma, y el rojo lo sigue decidiendo `ai/semaforo.py`.
 
 ## Fuentes de datos
 
