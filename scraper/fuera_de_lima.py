@@ -9,7 +9,9 @@ Este script lo replica en las filas con `distrito_lima` vacío:
   2. Si no, usa la tabla UBICACION de abajo (Callao, Lima Provincias y otros departamentos).
   3. Si la entidad es en realidad de Lima Metropolitana (la pista automática falló), le
      pone su distrito y no la marca como referencia.
-Nunca sobrescribe lo que la founder ya llenó.
+Además corrige las resoluciones de HOMONIMOS: municipalidades que se llaman como un distrito
+de Lima pero son de otro departamento (la pista automática las confunde).
+Nunca sobrescribe lo que la founder ya marcó como referencia.
 
 Uso (desde la raíz del repo):
     python -m scraper.fuera_de_lima
@@ -43,6 +45,7 @@ UBICACION = {
     "municipalidad provincial de canete": ("Cañete", "Cañete (Lima Provincias)"),
     "municipalidad provincial de chiclayo": ("Chiclayo", "Lambayeque"),
     "municipalidad provincial de huaral": ("Huaral", "Huaral (Lima Provincias)"),
+    "municipalidad provincial de huancayo": ("Huancayo", "Junín"),
     "municipalidad provincial de huaura": ("Huaura", "Huaura (Lima Provincias)"),
     "municipalidad provincial de huanuco": ("Huánuco", "Huánuco"),
     "municipalidad provincial de lambayeque": ("Lambayeque", "Lambayeque"),
@@ -50,6 +53,14 @@ UBICACION = {
     "municipalidad provincial de piura": ("Piura", "Piura"),
     "municipalidad provincial de trujillo": ("Trujillo", "La Libertad"),
     "municipalidad provincial del santa": ("Santa", "Ancash"),
+}
+
+# Resoluciones de municipalidades homónimas de un distrito de Lima, revisadas por la founder.
+# numero_resolucion -> (lugar para distrito_lima, departamento para la nota)
+HOMONIMOS = {
+    # "Municipalidad Distrital de Santa Rosa": no es Santa Rosa (Lima), sino del Santa,
+    # en Chimbote (revisión de la founder del 10/11/2026).
+    "0693-2017/CEB-INDECOPI": ("Santa", "Ancash"),
 }
 
 
@@ -64,9 +75,18 @@ def es_referencia(fila: dict) -> bool:
 
 def main() -> None:
     filas = revision.leer_csv()
+    homonimos = 0
+    for f in filas:
+        if f["numero_resolucion"] in HOMONIMOS and not es_referencia(f):
+            lugar, departamento = HOMONIMOS[f["numero_resolucion"]]
+            f["distrito_lima"] = lugar
+            f["notas"] = NOTA.format(departamento)
+            homonimos += 1
     criterio_founder = {
         clave(f["entidad"]): (f["distrito_lima"], f["notas"])
-        for f in filas if es_referencia(f) and f["distrito_lima"].strip()
+        for f in filas
+        if es_referencia(f) and f["distrito_lima"].strip()
+        and not distrito_de_lima(f["entidad"])  # homónimo de Lima: se decide por resolución
     }
     copiadas, por_tabla, de_lima, pendientes = 0, 0, 0, set()
     for f in filas:
@@ -88,6 +108,7 @@ def main() -> None:
         else:
             pendientes.add(f["entidad"])
     revision.guardar_csv(filas)
+    print(f"{homonimos} filas de municipalidades homónimas de un distrito de Lima (HOMONIMOS).")
     print(f"{copiadas} filas con el mismo texto que ya puso la founder para esa entidad.")
     print(f"{por_tabla} filas marcadas con la tabla UBICACION.")
     print(f"{de_lima} filas eran de Lima Metropolitana (la pista automática había fallado).")
