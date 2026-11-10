@@ -1,27 +1,36 @@
-# Publicaciones de inaplicación con efectos generales
+# Publicaciones de barreras burocráticas en El Peruano
 
-Esta carpeta alimenta el **semáforo rojo**. La app pinta un requisito de rojo solo si aquí hay una publicación en El Peruano para **esa municipalidad y esa medida**, y si ya surte efecto según su fecha. El LLM no decide el rojo: lo decide el código contra esta tabla.
+Esta carpeta alimenta el **semáforo rojo**. Un requisito sale en rojo solo si coincide con una medida de `publicaciones.json` de **esa municipalidad**, que la founder marcó **con efectos generales** y **vigente**, y que ya surte efecto (desde el día siguiente de su publicación, art. 8.3 del D.Leg. 1256). La regla está en [`ai/semaforo.py`](../../ai/semaforo.py).
 
-## Qué poner aquí
+## Cómo se arma
 
-1. **Los archivos tal cual los descargaste** (PDF o HTML de El Peruano) en `fuentes/`.
-2. **Los links de El Peruano**, uno por línea, en `urls.txt` (si los tienes).
+1. **Scraper** ([`scraper/elperuano.py`](../../scraper/elperuano.py)): busca "barrera burocrática" en [busquedas.elperuano.pe](https://busquedas.elperuano.pe) del 01/01/2025 al 10/11/2026, se queda con lo publicado por INDECOPI que involucra a una municipalidad y lee los campos rotulados de cada resolución. No usa IA.
+2. **Revisión de la founder**: abre `publicaciones_para_revisar.csv` en Excel y llena las columnas de la derecha.
+3. **Carga** ([`scraper/cargar_revision.py`](../../scraper/cargar_revision.py)): valida las filas marcadas y escribe `publicaciones.json`, que es la tabla que usa la app.
 
-Con eso, la ingesta arma `publicaciones.json`, y **la founder la revisa a mano antes de usarla**.
+```bash
+python -m scraper.elperuano --desde 2025-01-01 --hasta 2026-11-10
+python -m scraper.cargar_revision
+```
 
-## Datos que necesita cada caso
+## Archivos
 
-| Campo | Ejemplo |
+| Archivo | Qué es |
 |---|---|
-| Número de resolución | `0XXX-2026/CEB-INDECOPI` |
-| Órgano | CEB o Sala (SEL) |
-| Municipalidad | Municipalidad Distrital de ... |
-| Tipo de acto | disposición administrativa o actuación material |
-| Norma cuestionada | ordenanza, TUPA, artículo |
-| Medida declarada barrera | qué exigencia se declaró barrera |
-| Tipo | ilegal o carente de razonabilidad |
-| Fecha de publicación en El Peruano | dd/mm/aaaa |
-| URL en El Peruano | `https://busquedas.elperuano.pe/dispositivo/NL/...` |
-| Estado | vigente, revocada o la entidad ya modificó |
+| `busqueda_elperuano.csv` | Todos los resultados del buscador (cualquier sector) |
+| `fuentes/elperuano/<id>.html` | Texto de cada publicación de INDECOPI, tal como lo sirve El Peruano |
+| `publicaciones_crudas.json` | Resoluciones que involucran a municipalidades, con sus campos leídos |
+| `publicaciones_para_revisar.csv` | Una fila por medida, para la revisión de la founder |
+| `publicaciones.json` | La tabla revisada que usa la app |
 
-Solo casos de **licencia de funcionamiento** en municipalidades de **Lima**.
+## Columnas que llena la founder
+
+| Columna | Valores | Para qué |
+|---|---|---|
+| `efectos_generales` | sí / no | Decisión legal (arts. 8, 9 y 10 del D.Leg. 1256). La columna `efectos_generales_sugerido` es solo una pista |
+| `usar_en_app` | sí / no | Si la medida entra a la tabla de la app |
+| `estado` | vigente / revocada / entidad_ya_modifico | Si la barrera sigue vigente |
+| `distrito_lima` | (corregir si hace falta) | Las pistas automáticas pueden fallar con distritos homónimos |
+| `notas` | texto libre | Comentarios de la revisión |
+
+Las columnas `tipo_acto_pista`, `procedimiento_pista` y `efectos_generales_sugerido` las calcula el scraper a partir del texto y **la founder las confirma**.
