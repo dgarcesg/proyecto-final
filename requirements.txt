@@ -7,6 +7,9 @@ anthropic==2.7.0               # Claude Opus 5.5 (salidas estructuradas)
 pydantic==2.14.3             # esquemas de las salidas estructuradas
 faster-whisper==1.2.1          # voz a texto (sesión 13)
 av==16.1.0                     # lee el audio; av 19 no es compatible con faster-whisper 1.2.1
+# torch solo para CPU en el servidor (Linux, Python 3.12): la versión normal trae CUDA y pesa varios GB.
+# En Windows/Mac se instala la que pida sentence-transformers.
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; sys_platform == "linux"
 sentence-transformers==6.2.0   # embeddings multilingual-e5-small (sesión 08)
 chromadb==1.5.9                # base vectorial del RAG (sesión 08)
 

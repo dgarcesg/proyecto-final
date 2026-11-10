@@ -10,10 +10,9 @@ ENV HOME=/home/user \
     PYTHONUNBUFFERED=1
 WORKDIR /home/user/app
 
-# torch solo para CPU: la versión normal trae CUDA (tarjetas de video) y pesa varios GB
+# requirements.txt ya pide torch solo para CPU en Linux (la versión normal pesa varios GB más)
 COPY --chown=user requirements.txt .
-RUN pip install --no-cache-dir torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu \
- && pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --chown=user . .
 
