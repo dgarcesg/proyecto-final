@@ -61,10 +61,15 @@ Barreras burocráticas que INDECOPI declaró y publicó en El Peruano, revisadas
 Para cada requisito, en el mismo orden, devuelve:
 - requisito: el texto del requisito, igual que arriba.
 - medida_publicada_id: el id de la medida publicada que corresponde a este requisito, o null.
-  * Si la medida es de la municipalidad del distrito del emprendedor, elígela cuando sea la \
-misma exigencia (el mismo documento, el mismo cobro o la misma restricción).
-  * Si es de otra municipalidad, elígela solo si es el mismo tipo de exigencia (por ejemplo, \
-el mismo documento), como precedente.
+  * Medida de la municipalidad del distrito del emprendedor: elígela solo si es la misma \
+exigencia (el mismo documento, el mismo cobro o la misma restricción) en el mismo \
+procedimiento, la licencia de funcionamiento; o si es una restricción general que se aplica \
+a todos los negocios del distrito (por ejemplo, un horario de funcionamiento). Si es de la \
+misma municipalidad pero de OTRO procedimiento (por ejemplo, anuncios publicitarios o \
+Defensa Civil), no la elijas: la inaplicación se refiere a la disposición de ese otro \
+procedimiento.
+  * Medida de otra municipalidad: elígela solo si es el mismo tipo de exigencia (por \
+ejemplo, el mismo documento), como precedente, aunque sea de otro procedimiento.
   * Si ninguna corresponde, null. No elijas una medida solo porque trata un tema parecido.
 - color_sugerido: "ambar" si, según las normas, la municipalidad no podría exigirlo o hay \
 dudas serias de que pueda (por ejemplo, porque no está entre los requisitos máximos del \

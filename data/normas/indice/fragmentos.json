@@ -1,6 +1,6 @@
 {
  "modelo": "intfloat/multilingual-e5-small",
- "huella_normas": "961eb965595010da",
+ "huella_normas": "7972d98518a07449",
  "fragmentos": [
   {
    "cita": "D.Leg. 1256, art. 1",
@@ -3109,6 +3109,153 @@
    "articulo": "7",
    "parte": "",
    "texto": "Ley 28976 (modificada por D.Leg. 1657), art. 7. Requisitos para solicitar la licencia de funcionamiento.\nPara el otorgamiento de la licencia de funcionamiento serán exigibles como máximo, los siguientes requisitos:\nd) Requisitos especiales: en los supuestos que a continuación se indican, son exigibles los siguientes requisitos:\nd.1) Declaración jurada de contar con título profesional vigente y encontrarse habilitado por el colegio profesional correspondiente, en el caso de servicios relacionados con la salud.\nd.3) Declaración jurada de contar con la autorización sectorial respectiva en el caso de aquellas actividades que conforme a Ley la requieran de manera previa al otorgamiento de la licencia de funcionamiento.\nd.4) Cuando se trate de un bien inmueble declarado monumento integrante del Patrimonio Cultural de la Nación, el administrado presenta una declaración jurada de conservación de la estructura física del bien cultural en el desarrollo de las actividades objeto de la licencia de funcionamiento.\nVerificados los requisitos señalados, se procederá al pago de la Tasa de acuerdo a lo previsto en el artículo 15 de esta Ley”."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 1",
+   "norma": "D.Leg. 1246",
+   "articulo": "1",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 1. Ámbito de aplicación.\nEl presente Decreto Legislativo es de aplicación para todas las entidades de la Administración Pública comprendidas en el artículo I del Título Preliminar de la Ley Nº 27444, Ley del Procedimiento Administrativo General."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 2",
+   "norma": "D.Leg. 1246",
+   "articulo": "2",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 2. Interoperabilidad entre entidades de la Administración Pública.\nDispóngase que las entidades de la Administración Pública de manera gratuita, a través de la interoperabilidad, interconecten, pongan a disposición, permitan el acceso o suministren la información o bases de datos actualizadas que administren, recaben, sistematicen, creen o posean respecto de los usuarios o administrados, que las demás entidades requieran necesariamente y de acuerdo a ley, para la tramitación de sus procedimientos administrativos y para sus actos de administración interna.\nEn los casos en los que la información o datos se encuentren protegidos bajo la Ley Nº 29733, Ley de Protección de Datos Personales, las entidades de la Administración Pública deben obtener la autorización expresa e indubitable del usuario o administrado para acceder a dicha información o datos."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 3",
+   "norma": "D.Leg. 1246",
+   "articulo": "3",
+   "parte": "1/2",
+   "texto": "D.Leg. 1246, art. 3. Implementación progresiva de la interoperabilidad en beneficio del ciudadano.\n3.1 Las entidades de la Administración Pública que posean y administren la información señalada en el numeral 3.2 del presente artículo deben ponerla a disposición de manera gratuita y permanente a las entidades del Poder Ejecutivo para la interoperabilidad a que hace referencia el artículo 2 del presente Decreto Legislativo, dentro del plazo máximo de sesenta (60) días hábiles computado a partir de la publicación de la presente norma.\n3.2 La información de los usuarios y administrados que las entidades de la Administración Pública deben proporcionar a las entidades del Poder Ejecutivo de manera gratuita es:\n- Identificación y estado civil;\n- Antecedentes penales;\n- Antecedentes judiciales;\n- Antecedentes policiales;\n- Grados y Títulos;\n- Vigencia de poderes y designación de representantes legales;\n- Titularidad o dominio sobre bienes registrados.\n3.3 En tanto se implemente la interoperabilidad, la información y documentos mencionados en el numeral 3.2 precedente podrán ser sustituidos, a opción del administrado o usuario, por declaración jurada, conforme a lo establecido en la Ley Nº 27444, Ley del Procedimiento Administrativo General.\n3.4 Mediante Decreto Supremo refrendado por el Presidente del Consejo de Ministros, con el voto aprobatorio del Consejo de Ministros, se establecen los plazos aplicables a las demás entidades de la Administración Pública, y cualquier otra disposición que resulte necesaria para la interoperabilidad a que hace referencia el artículo 2 del presente Decreto Legislativo.\n3.5 Mediante Decreto Supremo refrendado por el Presidente del Consejo de Ministros y el sector competente se puede ampliar la información o documentación indicada en el numeral 3.2 del presente artículo."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 3",
+   "norma": "D.Leg. 1246",
+   "articulo": "3",
+   "parte": "2/2",
+   "texto": "D.Leg. 1246, art. 3. Implementación progresiva de la interoperabilidad en beneficio del ciudadano.\n3.6 Las entidades de la Administración Pública deben utilizar la Plataforma de Interoperabilidad del Estado administrada por la Presidencia del Consejo de Ministros a través de la Oficina Nacional de Gobierno Electrónico e Informática - ONGEI."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 4",
+   "norma": "D.Leg. 1246",
+   "articulo": "4",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 4. Prohibición de la exigencia de información a los usuarios y administrados.\nLas entidades de la Administración Pública están prohibidas de exigir a los administrados o usuarios la información que puedan obtener directamente mediante la interoperabilidad a que se refieren los artículos 2 y 3 del presente Decreto Legislativo."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 5",
+   "norma": "D.Leg. 1246",
+   "articulo": "5",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 5. Prohibición de la exigencia de documentación.\n5.1 Las entidades de la Administración Pública están prohibidas de exigir a los administrados o usuarios, en el marco de un procedimiento o trámite administrativo, los siguientes documentos:\na) Copia del Documento Nacional de Identidad.\nb) Copias de Partida de Nacimiento o de Bautizo cuando se presente el Documento Nacional de Identidad, excepto en los procedimientos donde resulte esencial acreditar la filiación y esta no pueda ser acreditada fehacientemente por otro medio.\nc) Copias de Partida de Nacimiento o Certificado de Defunción emitidas en fecha reciente o dentro de un periodo máximo.\nd) Legalización notarial de firmas, salvo que se exija por ley expresa.\ne) Copia de la ficha RUC o certificado de información registrada en la Superintendencia Nacional de Aduanas y Administración Tributaria - SUNAT.\nf) Certificados o constancias de habilitación profesional o similares expedidos por los Colegios Profesionales, cuando dicha calidad pueda ser verificadas a través del respectivo portal institucional.\ng) Cualquier otro requisito que acredite o proporcione información que conste en registros de libre acceso a través de internet u otro medio de comunicación pública.\n5.2. Lo dispuesto en los literales e), f) y g) del numeral anterior no es aplicable a aquellas entidades de la Administración Pública ubicadas en zonas que no cuenten con cobertura de acceso a internet.\n5.3. Mediante Decreto Supremo refrendado por el Presidente del Consejo de Ministros se podrá ampliar la documentación indicada en el numeral 5.1 del presente artículo."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 6",
+   "norma": "D.Leg. 1246",
+   "articulo": "6",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 6. Facilidades para efectuar el pago de derechos administrativos.\nLas entidades de la Administración Pública suscriben convenios con instituciones financieras bajo la supervisión de la Superintendencia de Banca, Seguros y AFP para facilitar el pago de los derechos de tramitación de los procedimientos administrativos en sus oficinas, a través de las plataformas digitales de sus clientes o de las propias entidades públicas.\nEl Banco de la Nación implementa el pago en línea de todos los procedimientos administrativos y tasas que recauda.\nEl Ministerio de Economía y Finanzas, a través de la Dirección General de Endeudamiento y Tesoro Público, establece la normatividad complementaria que sea necesaria para la adecuada implementación de lo establecido en el presente artículo."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 7",
+   "norma": "D.Leg. 1246",
+   "articulo": "7",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 7. Documento Nacional de Identidad.\nEl vencimiento de la fecha de vigencia del Documento Nacional de Identidad no constituye impedimento para la participación del ciudadano en actos civiles, comerciales, administrativos, notariales, registrales, judiciales, policiales y, en general, para todos aquellos casos en que deba ser presentado para acreditar su identidad."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 8",
+   "norma": "D.Leg. 1246",
+   "articulo": "8",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 8. Emisión gratuita de la primera copia certificada de denuncia policial.\nLa primera copia certificada de una denuncia policial es gratuita y debe ser emitida y entregada al denunciante de manera inmediata, una vez realizada la denuncia correspondiente, dejándose constancia de la entrega."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 9",
+   "norma": "D.Leg. 1246",
+   "articulo": "9",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 9. Eliminación de la exigencia del certificado de supervivencia u otras constancias de sobrevivencia.\nElimínese la exigencia del certificado de supervivencia u otras constancias de sobrevivencia en todos los procedimientos o trámites relacionados a las pensiones bajo cualquier régimen, y otras prestaciones económicas a cargo del Estado, así como para el pago periódico de estas.\nLa verificación o constatación de la supervivencia de las personas será realizada mediante el cruce de información del respectivo listado de pensionistas o beneficiarios con el Registro Nacional de Identificación y Estado Civil - RENIEC o de sus propios sistemas de verificación, además de la declaración jurada a que se refiere la Ley Nº 27444, Ley del Procedimiento Administrativo General."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 10",
+   "norma": "D.Leg. 1246",
+   "articulo": "10",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 10. Prohibición de requerir el certificado de mudanza domiciliaria u otras constancias de similar naturaleza.\nSe prohíbe exigir el certificado de mudanza domiciliaria u otras constancias de similar naturaleza. Para el transporte de bienes muebles y enseres en mudanza, solo es exigible al transportista una declaración jurada suscrita por el usuario del servicio que indique los puntos de partida y destino y la relación de bienes a trasladar."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 11",
+   "norma": "D.Leg. 1246",
+   "articulo": "11",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 11. Declaración Jurada en la Ley de Tributación Municipal.\nLa declaración jurada a que hacen referencia los literales b) de los artículos 14 y 34 del Texto Único Ordenado de la Ley de Tributación Municipal, aprobado por Decreto Supremo Nº 156-2004-EF, la presenta únicamente el adquirente bajo cualquier título.\nEn virtud de la declaración jurada del adquirente, sustentada con el documento que acredite la propiedad, tanto de predios como de vehículos, la Municipalidad respectiva procederá al descargo automático del anterior propietario como titular del bien transferido."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 12",
+   "norma": "D.Leg. 1246",
+   "articulo": "12",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 12. Sujetos autorizados para solicitar Certificados.\nLos certificados de antecedentes penales, judiciales y policiales podrán ser solicitados, además del interesado, por su cónyuge, conviviente o sus parientes hasta el primer grado de consanguineidad, previa autorización expresa e indubitable del titular, mediante carta simple."
+  },
+  {
+   "cita": "D.Leg. 1246, art. 13",
+   "norma": "D.Leg. 1246",
+   "articulo": "13",
+   "parte": "",
+   "texto": "D.Leg. 1246, art. 13. Financiamiento.\nLa implementación de lo establecido en el presente Decreto Legislativo se financia con cargo al presupuesto institucional de las entidades involucradas, sin demandar recursos adicionales al Tesoro Público."
+  },
+  {
+   "cita": "D.Leg. 1246, Única Disposición (Disposición complementaria final)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Única (Disposición complementaria final)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Única Disposición (Disposición complementaria final). Falta de carácter disciplinario por el incumplimiento de las disposiciones y plazos.\nConstituye falta de carácter disciplinario del directivo o servidor bajo cualquier régimen y modalidad contractual con la entidad de la Administración Pública, el incumplimiento de las disposiciones y plazos establecidos en los artículos 2, 3, 4, 5, 7, 8, 9, 10, 11 y 12 del presente Decreto Legislativo. La falta será sancionada según su gravedad, previo proceso administrativo.\nEl procedimiento administrativo disciplinario, la graduación y determinación de la sanción, se rigen por las normas del régimen disciplinario y sancionador de la Ley Nº 30057, Ley del Servicio Civil y su Reglamento, aprobado por Decreto Supremo Nº 040-2014-PCM.\nEl titular de la entidad es el responsable del cumplimiento de la presente disposición."
+  },
+  {
+   "cita": "D.Leg. 1246, Primera Disposición (Disposiciones complementarias modificatorias)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Primera (Disposiciones complementarias modificatorias)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Primera Disposición (Disposiciones complementarias modificatorias). Modificación del Decreto Legislativo Nº 1140.\nModifíquese el numeral 5) del artículo 6 del Decreto Legislativo Nº 1140, Decreto Legislativo que crea la Oficina Nacional de Gobierno Interior, en los términos siguientes:\nArtículo 6.- Funciones de la Oficina Nacional de Gobierno Interior\nLa ONAGI tiene las siguientes funciones:\n(.)\n5)Autorizar, supervisar, controlar y fiscalizar la realización de rifas con fines sociales y colectas públicas a nivel nacional;\n(.)”"
+  },
+  {
+   "cita": "D.Leg. 1246, Segunda Disposición (Disposiciones complementarias modificatorias)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Segunda (Disposiciones complementarias modificatorias)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Segunda Disposición (Disposiciones complementarias modificatorias). Modificación de la Ley Nº 29973.\nModifíquese el artículo 76 de la Ley Nº 29973, Ley General de la Persona con Discapacidad, en los términos siguientes:\nArticulo 76 .- Certificado de la discapacidad\nEl certificado de discapacidad acredita la condición de persona con discapacidad y es otorgado por médicos certificadores registrados de establecimientos de salud pública y privada a nivel nacional. La evaluación, calificación y la certificación son gratuitas.\nLa certificación es inmediata cuando la discapacidad sea evidente o congénita.\nLas Brigadas Itinerantes Calificadoras de Discapacidad (BICAD) están a cargo del Ministerio de Salud y deberán atender la demanda de certificación de personas con discapacidad que no puedan acudir a los establecimientos de salud a nivel nacional.”"
+  },
+  {
+   "cita": "D.Leg. 1246, Tercera Disposición (Disposiciones complementarias modificatorias)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Tercera (Disposiciones complementarias modificatorias)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Tercera Disposición (Disposiciones complementarias modificatorias). Modificación del Texto Único Ordenado del Decreto Legislativo Nº 728.\nModificase el artículo 73 del Texto Único Ordenado del Decreto Legislativo Nº 728, Ley de Productividad y Competitividad Laboral, aprobado por Decreto Supremo Nº 003-97-TR, en los siguientes términos:\nArtículo 73 .- La Autoridad Administrativa de Trabajo podrá ordenar la verificación de los requisitos formales a que se refiere el artículo precedente, a efectos de lo dispuesto en el inciso d) del Artículo 77, sin perjuicio de la multa que se puede imponer al empleador por el incumplimiento incurrido."
+  },
+  {
+   "cita": "D.Leg. 1246, Cuarta Disposición (Disposiciones complementarias modificatorias)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Cuarta (Disposiciones complementarias modificatorias)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Cuarta Disposición (Disposiciones complementarias modificatorias). Modificación del Decreto Legislativo Nº 689.\nModifícase el artículo 8 del Decreto Legislativo 689, Ley de Contratación de Extranjeros, en los términos siguientes:\nArtículo 8 .- Las solicitudes deberán ser acompañadas con los siguientes documentos:\na) Declaración Jurada de la empresa donde se señale que la contratación del extranjero cumple las condiciones establecidas por esta ley y cuenta con la capacitación o experiencia laboral requerida por la misma.\nb) El contrato de trabajo escrito.”"
+  },
+  {
+   "cita": "D.Leg. 1246, Quinta Disposición (Disposiciones complementarias modificatorias)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Quinta (Disposiciones complementarias modificatorias)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Quinta Disposición (Disposiciones complementarias modificatorias). Modificación de la Ley Nº 28518.\nModifíquese el artículo 48 de la Ley Nº 28518, Ley sobre modalidades formativas laborales, en los términos siguientes:\nArtículo 48 .- Registro\nLos beneficiarios de las diferentes modalidades formativas deben ser declarados como tales en la planilla electrónica, conforme a la normativa aplicable.”"
+  },
+  {
+   "cita": "D.Leg. 1246, Única Disposición (Disposición complementaria derogatoria)",
+   "norma": "D.Leg. 1246",
+   "articulo": "Única (Disposición complementaria derogatoria)",
+   "parte": "",
+   "texto": "D.Leg. 1246, Única Disposición (Disposición complementaria derogatoria). Derogatorias.\nDeróguense los artículos 18 , 19 , 34 , 35 , el inciso 1 del artículo 42, el último párrafo del artículo 46, y los incisos 2 y 3 del artículo 52 de la Ley Nº 28518, Ley sobre modalidades formativas laborales, así como todas las disposiciones que se opongan al presente Decreto Legislativo."
   },
   {
    "cita": "Ley 31866, art. único",

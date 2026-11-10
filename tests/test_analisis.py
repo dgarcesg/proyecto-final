@@ -43,9 +43,11 @@ def test_z_flujo_completo_con_claude_simulado():
                 "solo puedo atender de 6 de la mañana a 11 de la noche",
                 "croquis de ubicación del local",
                 "copia de mi DNI",
+                "solicitud con declaración jurada con mi número de RUC",
             ])
         assert "2567628-1#2" in mensaje  # las medidas publicadas llegan al prompt
         assert 'cita="TUO de la Ley 28976, art. 7"' in mensaje  # y los artículos base también
+        assert 'cita="D.Leg. 1246, art. 5"' in mensaje
         return EvaluacionesLLM(evaluaciones=[
             EvaluacionLLM(requisito="solo puedo atender de 6 de la mañana a 11 de la noche",
                           medida_publicada_id="2567628-1#2", color_sugerido="ambar",
@@ -56,8 +58,13 @@ def test_z_flujo_completo_con_claude_simulado():
                           norma_citada="TUO de la Ley 28976, art. 7",
                           fragmento_usado="serán exigibles como máximo, los siguientes requisitos",
                           explicacion_simple="..."),
-            EvaluacionLLM(requisito="copia de mi DNI", medida_publicada_id=None, color_sugerido="verde",
-                          norma_citada="TUO de la Ley 27444, art. 40", fragmento_usado="texto inventado por el modelo",
+            EvaluacionLLM(requisito="copia de mi DNI", medida_publicada_id=None, color_sugerido="ambar",
+                          norma_citada="D.Leg. 1246, art. 5",
+                          fragmento_usado="a) Copia del Documento Nacional de Identidad.",
+                          explicacion_simple="..."),
+            EvaluacionLLM(requisito="solicitud con declaración jurada con mi número de RUC",
+                          medida_publicada_id=None, color_sugerido="verde",
+                          norma_citada="TUO de la Ley 28976, art. 7", fragmento_usado="texto inventado por el modelo",
                           explicacion_simple="..."),
         ])
 
@@ -71,10 +78,12 @@ def test_z_flujo_completo_con_claude_simulado():
 
     assert "45678912" not in r.texto_enviado
     colores = [e.color for e in r.evaluaciones]
-    assert colores == ["rojo", "ambar", "verde"]  # mismo distrito / otro distrito / sin medida
+    # mismo distrito / precedente de otro distrito / sin medida (ámbar por norma) / sin medida (verde)
+    assert colores == ["rojo", "ambar", "ambar", "verde"]
     assert r.evaluaciones[0].surte_efecto_desde == date(2026, 10, 26)  # día siguiente de la publicación
     assert r.evaluaciones[1].cita_verificada
-    assert not r.evaluaciones[2].cita_verificada  # la frase no está en la norma
+    assert r.evaluaciones[2].cita_verificada
+    assert not r.evaluaciones[3].cita_verificada  # la frase no está en la norma
 
 
 if __name__ == "__main__":

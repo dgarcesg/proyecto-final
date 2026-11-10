@@ -129,11 +129,13 @@ PLANTILLA_CONSULTA = "requisito para la licencia de funcionamiento: {}"
 
 # Siempre se le pasan a Claude: los requisitos máximos de la licencia (art. 7 de la Ley
 # Marco, en el TUO y con su modificación posterior) y la documentación prohibida de
-# solicitar (art. 40 del TUO de la Ley 27444).
+# solicitar (art. 40 del TUO de la Ley 27444 y art. 5 del D.Leg. 1246, que prohíbe, entre
+# otros, pedir copia del DNI o de la ficha RUC).
 ARTICULOS_BASE = [
     "TUO de la Ley 28976, art. 7",
     "Ley 28976 (modificada por D.Leg. 1657), art. 7",
     "TUO de la Ley 27444, art. 40",
+    "D.Leg. 1246, art. 5",
 ]
 
 

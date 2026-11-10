@@ -62,6 +62,10 @@ NORMAS = [
         inicio="TEXTO ÚNICO ORDENADO", fin=(), modificatorias="Enlace Web: Anexos",
     ),
     Norma(
+        "DL-1246.html", "D.Leg. 1246",
+        "Decreto Legislativo 1246, que aprueba diversas medidas de simplificación administrativa",
+    ),
+    Norma(
         "Ley-31866.html", "Ley 31866",
         "Ley 31866, que modifica la Ley 30877, Ley General de Bodegueros",
         fin=("POR TANTO", "Comuníquese"),

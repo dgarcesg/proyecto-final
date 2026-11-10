@@ -72,7 +72,7 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 
 | Fuente | Rango | Para qué |
 |---|---|---|
-| Normas en `data/normas/` (exportadas del SPIJ): D.Leg. 1256 (con la Ley 32587), TUO de la Ley 27444 (DS 006-2026-JUS), TUO de la Ley Marco de Licencia de Funcionamiento (DS 163-2020-PCM), Ley 31866 | Vigentes al 10/11/2026 | Corpus del RAG |
+| Normas en `data/normas/` (exportadas del SPIJ): D.Leg. 1256 (con la Ley 32587), TUO de la Ley 27444 (DS 006-2026-JUS), TUO de la Ley Marco de Licencia de Funcionamiento (DS 163-2020-PCM), D.Leg. 1246, Ley 31866 | Vigentes al 10/11/2026 | Corpus del RAG |
 | Scraper de El Peruano (INDECOPI, municipalidades) | 01/01/2025 – 10/11/2026 | Semáforo rojo |
 | [Listado de INDECOPI de resoluciones con efectos generales](https://www.gob.pe/institucion/indecopi/informes-publicaciones/4292797-listado-de-resoluciones-con-efectos-generales_barreras-burocraticas) | 2017 – 06/11/2026 | Semáforo rojo (complementa al scraper) |
 

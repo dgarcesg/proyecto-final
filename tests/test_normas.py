@@ -51,6 +51,16 @@ def test_modificacion_posterior_del_art_7_de_la_ley_marco():
     assert "d.4)" in texto("Ley 28976 (modificada por D.Leg. 1657), art. 7")
 
 
+def test_dl_1246_prohibe_pedir_copia_del_dni():
+    assert "a) Copia del Documento Nacional de Identidad." in texto("D.Leg. 1246, art. 5")
+
+
+def test_dl_1246_las_modificatorias_no_se_confunden_con_sus_articulos():
+    # su Primera Disposición cita el nuevo art. 6 del D.Leg. 1140; no es el art. 6 del D.Leg. 1246
+    assert "Facilidades para efectuar el pago" in texto("D.Leg. 1246, art. 6")
+    assert "Oficina Nacional de Gobierno Interior" not in texto("D.Leg. 1246, art. 6")
+
+
 def test_ley_31866_incluye_el_nuevo_art_6_de_la_ley_de_bodegueros():
     articulo = texto("Ley 31866, art. único")
     assert "licencia provisional de funcionamiento" in articulo
