@@ -50,7 +50,8 @@ Estos artículos aplican a todos los requisitos:
 </normas_base>
 
 <medidas_publicadas>
-Barreras burocráticas que INDECOPI declaró y publicó en El Peruano, revisadas por la founder:
+Barreras burocráticas que INDECOPI declaró y publicó, revisadas por la founder. Son las más \
+parecidas a los requisitos, de la municipalidad del emprendedor y de otras:
 {medidas}
 </medidas_publicadas>
 
@@ -93,9 +94,14 @@ def _articulo(a: ArticuloRecuperado) -> str:
 
 
 def _medida(m: MedidaPublicada) -> str:
+    extra = ""
+    if m.materia:
+        extra += f"\nMateria: {m.materia}"
+    if m.norma_cuestionada:
+        extra += f"\nDonde está: {m.norma_cuestionada[:300]}"
     return (
         f'<medida id="{m.id_medida}" municipalidad="{m.entidad}" distrito="{m.distrito}" '
-        f'resolucion="{m.numero_resolucion}" publicada="{m.fecha_publicacion}">\n{m.medida}\n</medida>'
+        f'resolucion="{m.numero_resolucion}" publicada="{m.fecha_publicacion}">\n{m.medida[:1200]}{extra}\n</medida>'
     )
 
 

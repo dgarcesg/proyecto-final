@@ -55,7 +55,7 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 | Herramienta | Sesión | Dónde está en el repo |
 |---|---|---|
 | Scraping y APIs | 03 | `scraper/` *(en construcción)* |
-| RAG: embeddings (multilingual-e5-small) + ChromaDB sobre las normas | 08 | [`ai/normas.py`](ai/normas.py), [`ai/rag.py`](ai/rag.py) |
+| RAG: embeddings (multilingual-e5-small) + ChromaDB sobre las normas, y búsqueda de las medidas publicadas más parecidas | 08 | [`ai/normas.py`](ai/normas.py), [`ai/rag.py`](ai/rag.py), [`ai/medidas.py`](ai/medidas.py) |
 | LLM con salidas estructuradas (Claude Opus 5.5 + Pydantic) | 08 | [`ai/llm.py`](ai/llm.py), [`ai/prompts.py`](ai/prompts.py), [`ai/analisis.py`](ai/analisis.py) |
 | Voz a texto con Whisper (faster-whisper `small`, int8, en la misma computadora) | 13 | [`ai/voz.py`](ai/voz.py) |
 

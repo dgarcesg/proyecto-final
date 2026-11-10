@@ -4,6 +4,7 @@
       -> anonimizar (DNI, RUC, teléfonos, correos)              ai/llm.py
       -> Claude extrae distrito, giro y requisitos              ai/llm.py + ai/prompts.py
       -> el buscador trae los artículos de cada requisito       ai/rag.py
+      -> y las medidas publicadas más parecidas                 ai/medidas.py
       -> Claude evalúa cada requisito (solo ámbar o verde)      ai/llm.py + ai/prompts.py
       -> el código revisa la cita y decide el rojo              aquí + ai/semaforo.py
 
@@ -18,7 +19,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import date
 
-from ai import llm, prompts, rag, semaforo
+from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo
 from ai.schemas import Evaluacion, EvaluacionesLLM, ExtraccionNota
 
 
@@ -54,10 +55,11 @@ def analizar(transcripcion: str, hoy: date | None = None) -> Resultado:
         return Resultado(texto, extraccion, [], consumo)
 
     base, por_requisito = rag.contexto_legal(extraccion.requisitos)
-    medidas = semaforo.cargar_medidas()
+    medidas = semaforo.cargar_medidas()  # la tabla completa, para decidir el rojo
+    candidatas = buscador_medidas.medidas_relacionadas(extraccion.requisitos, extraccion.distrito)
     respuesta = llm.preguntar(
         EvaluacionesLLM, prompts.SISTEMA,
-        prompts.prompt_evaluacion(extraccion, base, por_requisito, list(medidas.values())),
+        prompts.prompt_evaluacion(extraccion, base, por_requisito, candidatas),
         esfuerzo="medium", max_tokens=16000, consumo=consumo, nombre="evaluación",
     )
 
