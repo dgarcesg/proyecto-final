@@ -1,0 +1,8 @@
+[server]
+maxUploadSize = 20  # MB: suficiente para una nota de voz de 3 minutos
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+primaryColor = "#1d4ed8"
