@@ -11,6 +11,8 @@ Esta carpeta alimenta el **semáforo rojo**. Un requisito sale en rojo solo si c
 
 - Si una resolución está en **ambas**, no se duplica: queda la fila del scraper, con la fuente "El Peruano (scraper) y listado INDECOPI" y la materia del listado.
 - Para las medidas del listado, **`efectos_generales` = "sí" por defecto**, porque INDECOPI las publica como resoluciones con efectos generales (decisión de la founder). Igual se pueden cambiar.
+- El mismo criterio se aplica a las medidas que solo trajo el scraper: **"sí" cuando la pista del texto dice "sí"** (por ejemplo, "sí (art. 8: ilegal)"). Las que dicen "revisar" o "no" quedan vacías para la founder.
+- **`usar_en_app` = "sí" en todas** (decisión de la founder del 10/11/2026). La app elige en cada consulta las medidas más parecidas ([`ai/medidas.py`](../../ai/medidas.py)).
 - Para el periodo en que se solapan (2025–2026), 45 resoluciones municipales están en ambas fuentes, 8 solo en el listado y 37 solo en el scraper (sobre todo de comisiones regionales y del 08/11/2026).
 
 ## Cómo se arma

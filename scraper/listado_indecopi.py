@@ -18,6 +18,8 @@ Qué hace:
   3. Si la resolución ya la trajo el scraper, no la duplica: marca esa fila como hallada
      en ambas fuentes, le agrega la materia y pone efectos_generales = "sí" si estaba vacío.
   4. Si no, agrega sus medidas como filas nuevas. Lo ya revisado por la founder se conserva.
+  5. Aplica los criterios por defecto de la founder a todas las filas (revision.py):
+     usar_en_app = "sí", y efectos_generales = "sí" cuando la pista del texto dice "sí".
 
 Uso (desde la raíz del repo):
     python -m scraper.listado_indecopi
@@ -187,8 +189,10 @@ def main() -> None:
     repetidos = len(nuevas) - len({f["id_medida"] for f in nuevas})
     if repetidos:
         raise SystemExit(f"Hay {repetidos} id_medida repetidos en el listado: revisar el Excel.")
+    usar, efectos = revision.aplicar_criterios_founder(filas + nuevas)
     revision.guardar_csv(filas + nuevas)
     lima = sum(1 for f in nuevas if f["distrito_lima"])
+    print(f"   Criterios de la founder: usar_en_app = sí en {usar} filas; efectos_generales = sí en {efectos}.")
     print(f"2) {en_ambas} resoluciones ya estaban (traídas por el scraper): marcadas como 'ambas'.")
     print(f"3) {len(nuevas)} medidas del listado que no trajo el scraper ({lima} parecen de Lima).")
     print(f"   Total en {revision.RUTA_REVISION.name}: {len(filas) + len(nuevas)} medidas.")

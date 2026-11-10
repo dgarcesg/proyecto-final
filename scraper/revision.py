@@ -49,6 +49,27 @@ def guardar_csv(filas: list[dict], ruta: Path = RUTA_REVISION) -> None:
         raise SystemExit(f"No se pudo escribir {ruta.name}: ciérralo en Excel y vuelve a correr.")
 
 
+def aplicar_criterios_founder(filas: list[dict]) -> tuple[int, int]:
+    """Valores por defecto que decidió la founder (10/11/2026). Solo llena celdas vacías.
+
+    - usar_en_app: "sí" en todas las medidas.
+    - efectos_generales: "sí" cuando la pista del texto dice "sí" (por ejemplo, "sí (art. 8:
+      ilegal)"), igual que en el listado de INDECOPI. Las que dicen "revisar" o "no" quedan
+      vacías para su revisión.
+    Devuelve cuántas celdas llenó de cada columna.
+    """
+    usar = efectos = 0
+    for f in filas:
+        if not f.get("usar_en_app", "").strip():
+            f["usar_en_app"] = "sí"
+            usar += 1
+        if not f.get("efectos_generales", "").strip() and \
+                f.get("efectos_generales_sugerido", "").strip().lower().startswith("sí"):
+            f["efectos_generales"] = "sí"
+            efectos += 1
+    return usar, efectos
+
+
 def conservar_revision(nuevas: list[dict], anteriores: list[dict]) -> list[dict]:
     """Copia a las filas nuevas lo que la founder ya llenó en las anteriores (por id_medida)."""
     previas = {f["id_medida"]: f for f in anteriores if f.get("id_medida")}
