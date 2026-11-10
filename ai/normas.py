@@ -10,9 +10,12 @@ nota "(*) ... modificado por ..." y después la versión nueva entre comillas. P
     nueva reemplaza a la anterior en su mismo lugar;
   - las notas de SPIJ ("(*) ...", "(Texto según ...)") no entran al texto del artículo.
 
-El TUO de la Ley Marco de Licencia (D.S. 163-2020-PCM) es de 2020. SPIJ pone al final las
-modificaciones posteriores a la Ley 28976 (Ley 31914 de 2023 y D.Leg. 1657 de 2024). Esas se
-guardan como fragmentos aparte, citados como "Ley 28976 (modificada por ...)".
+El TUO de la Ley Marco de Licencia (D.S. 163-2020-PCM) es de 2020. Sus notas "(*)" dicen que
+la Ley 31914 (2023) y el D.Leg. 1657 (2024) modificaron la Ley 28976, pero no traen el texto
+nuevo. La exportación de SPIJ que usamos sí trae esos textos al final del archivo (son los que
+SPIJ muestra al abrir las notas; no forman parte del TUO). Se guardan como fragmentos aparte,
+citados como "Ley 28976 (modificada por ...)", para que Claude vea el texto vigente.
+La founder comparó el archivo con una descarga directa de SPIJ y decidió mantenerlos (10/11/2026).
 
 Uso (desde la raíz del repo), para revisar cómo quedó un artículo:
     python -m ai.normas "D.Leg. 1256" 8

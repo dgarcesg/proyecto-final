@@ -6,6 +6,7 @@ python-dotenv==1.2.4           # lee ANTHROPIC_API_KEY desde .env en local
 anthropic==2.7.0               # Claude Opus 5.5 (salidas estructuradas)
 pydantic==2.14.3             # esquemas de las salidas estructuradas
 faster-whisper==1.2.1          # voz a texto (sesión 13)
+av==16.1.0                     # lee el audio; av 19 no es compatible con faster-whisper 1.2.1
 sentence-transformers==6.2.0   # embeddings multilingual-e5-small (sesión 08)
 chromadb==1.5.9                # base vectorial del RAG (sesión 08)
 

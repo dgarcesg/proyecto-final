@@ -26,7 +26,7 @@ modelos/
 *.m4a
 *.ogg
 *.webm
-# Excepción: audios de prueba grabados por la founder con su propia voz
+# Excepción: audios de prueba (voz sintética de Windows o grabados por la founder con su propia voz)
 !data/demo/*.wav
 !data/demo/*.m4a
 
