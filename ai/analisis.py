@@ -14,13 +14,12 @@ Uso (desde la raíz del repo; necesita ANTHROPIC_API_KEY en .env y cuesta unos c
 
 from __future__ import annotations
 
-import re
 import sys
-import unicodedata
 from dataclasses import dataclass
 from datetime import date
 
 from ai import llm, medidas as buscador_medidas, prompts, rag, semaforo
+from ai.citas import cita_del_articulo, normalizar
 from ai.schemas import Evaluacion, EvaluacionesLLM, ExtraccionNota
 
 
@@ -32,22 +31,15 @@ class Resultado:
     consumo: llm.Consumo
 
 
-def _normalizar(texto: str) -> str:
-    texto = unicodedata.normalize("NFKC", texto or "")
-    texto = texto.replace("“", '"').replace("”", '"').replace("’", "'")
-    return " ".join(texto.lower().split()).strip(" .\"'")
-
-
 def cita_verificada(fragmento: str, articulos: list[rag.ArticuloRecuperado]) -> bool:
     """¿El fragmento que citó Claude está, palabra por palabra, en alguno de estos artículos?"""
-    buscado = _normalizar(fragmento)
-    return len(buscado) >= 15 and any(buscado in _normalizar(a.texto) for a in articulos)
+    buscado = normalizar(fragmento)
+    return len(buscado) >= 15 and any(buscado in normalizar(a.texto) for a in articulos)
 
 
 def verificar(norma: str, fragmento: str) -> bool:
     """¿La norma citada existe en el corpus y la frase está en ESE artículo?"""
-    # "D.Leg. 1246, art. 5.1 a)" -> "D.Leg. 1246, art. 5" (las citas del corpus son por artículo)
-    cita = re.sub(r"(, art\. [\w-]+?)(?:\.\d+.*|\s.*)$", r"\1", norma.strip())
+    cita = cita_del_articulo(norma)  # "D.Leg. 1246, art. 5.1 a)" -> "D.Leg. 1246, art. 5"
     try:
         return cita_verificada(fragmento, [rag.articulo_completo(cita)])
     except KeyError:  # Claude citó una norma o un artículo que no está en data/normas/

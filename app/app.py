@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import re
 import sys
 import time
 from datetime import date
@@ -24,7 +25,7 @@ sys.path.insert(0, str(RAIZ))  # para poder importar ai/ al correr "streamlit ru
 
 import streamlit as st  # noqa: E402
 
-from ai import analisis, llm, medidas, rag, voz  # noqa: E402
+from ai import analisis, citas, llm, medidas, rag, textos, voz  # noqa: E402
 
 st.set_page_config(page_title="TUPA bajo la lupa", page_icon="🔎", layout="centered")
 
@@ -39,6 +40,9 @@ COLORES = {
     "verde": ("🟢", "Te lo pueden pedir", st.success),
 }
 ORDEN = {"rojo": 0, "ambar": 1, "verde": 2}
+# Encabezados de la base legal (redacción de la founder)
+PROHIBIDA = "se verifica que esta exigencia figura como prohibida en las siguientes disposiciones:"
+PERMITIDA = "Esta exigencia está permitida por las siguientes disposiciones:"
 
 
 @st.cache_resource(show_spinner="Preparando la app (solo la primera vez, aprox. 1 minuto)...")
@@ -84,25 +88,51 @@ def transcribir(audio: bytes) -> None:
     st.session_state.resultado = None
 
 
+def md(texto: str) -> str:
+    """Escapa los signos que la app leería como formato ($ como fórmula, * como cursiva...)."""
+    texto = re.sub(r"([\\`*_$<>#~\[\]])", r"\\\1", texto)
+    return re.sub(r"^(\d+)\.", r"\1\\.", texto)  # "1. Tratándose..." al inicio no es una lista
+
+
+def bloque_cita(c) -> str:
+    """Nombre completo de la norma, encabezado del artículo y el texto citado (ai/citas.py)."""
+    x = citas.extracto(c.norma, c.fragmento)
+    if x is None:
+        return f"**{md(c.norma)}**\n\n{md(c.fragmento)}"
+    partes = [f"**{md(x.norma)}**", f"*{md(x.encabezado)}*"]
+    if x.texto:
+        partes.append(md(x.texto))
+    return "\n\n".join(partes)
+
+
+def titulo_base_legal(e) -> str:
+    if e.color == "verde":
+        return PERMITIDA
+    return f"Asimismo, {PROHIBIDA}" if e.texto_publicacion else PROHIBIDA[0].upper() + PROHIBIDA[1:]
+
+
 def mostrar_evaluacion(e) -> None:
     emoji, etiqueta, caja = COLORES[e.color]
+    verificadas = [c for c in e.base_legal if c.verificada]
+    # en rojo, el art. 8.3 del D.Leg. 1256 va junto a la resolución: es el fundamento de la inaplicación
+    de_la_resolucion = [c for c in verificadas if e.color == "rojo" and c.norma == textos.CITA_ART_8]
+    otras = [c for c in verificadas if c not in de_la_resolucion]
     with st.container(border=True):
-        st.markdown(f"### {emoji} {e.requisito}")
+        st.markdown(f"### {emoji} {md(e.requisito)}")
         st.caption(etiqueta)
         if e.texto_publicacion:
-            caja(e.texto_publicacion)
-        if e.color != "rojo" or not e.texto_publicacion:
-            st.markdown(f"**En simple:** {e.explicacion_simple}")
-        if e.publicacion and e.publicacion.url_el_peruano.startswith("http"):
-            st.markdown(f"[Ver la resolución en El Peruano]({e.publicacion.url_el_peruano})")
-        if e.base_legal:
-            with st.expander("Base legal"):
-                for c in e.base_legal:
-                    marca = "✅ cita verificada en la norma" if c.verificada else "⚠️ no pudimos verificar esta cita"
-                    st.markdown(f"**{c.norma}** · {marca}\n\n> {c.fragmento}")
-        if e.color == "rojo" and e.texto_publicacion:
-            with st.expander("Qué dice Claude"):
-                st.write(e.explicacion_simple)
+            partes = [md(e.texto_publicacion)]
+            if e.publicacion and e.publicacion.url_el_peruano.startswith("http"):
+                partes.append(f"[Ver la resolución en El Peruano]({e.publicacion.url_el_peruano})")
+            caja("\n\n".join(partes + [bloque_cita(c) for c in de_la_resolucion]))
+        if otras:
+            caja("\n\n".join([f"**{titulo_base_legal(e)}**", *(bloque_cita(c) for c in otras)]))
+        for c in e.base_legal:
+            if not c.verificada:
+                st.caption(f"⚠️ Claude citó también {md(c.norma)}, pero esa frase no está en el texto de la "
+                           "norma; por eso no se muestra.")
+        if e.color != "rojo" or not e.texto_publicacion:  # en rojo manda el texto fijo
+            st.markdown(f"**En simple:** {md(e.explicacion_simple)}")
 
 
 def mostrar_resultado(r: analisis.Resultado, segundos: float) -> None:

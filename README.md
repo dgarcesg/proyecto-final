@@ -44,6 +44,7 @@ python -m tests.test_normas     # división de las normas por artículo
 python -m tests.test_voz        # transcripción (carga Whisper; ~20 s)
 python -m tests.test_analisis   # flujo completo con Claude simulado (no gasta crédito)
 python -m tests.test_app        # la app de Streamlit con el audio de ejemplo y Claude simulado (~1-2 min)
+python -m tests.test_citas      # cómo se arma cada cita de la base legal (nombre completo, numeral y literal)
 python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 ```
 

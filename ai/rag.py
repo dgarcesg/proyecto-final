@@ -24,6 +24,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import unicodedata
 from dataclasses import dataclass
 from functools import lru_cache
 
@@ -180,6 +181,14 @@ def buscar(requisito: str, k: int = 3) -> list[ArticuloRecuperado]:
 
 # Para bodegas, además: el régimen de licencia provisional de la Ley 30877, modificada por la Ley 31866.
 ARTICULOS_BODEGA = ["Ley 31866, art. único"]
+# Giros que cuentan como bodega (criterio de la founder, 10/11/2026)
+GIROS_BODEGA = ("bodega", "abarrotes", "minimarket", "mini market", "mini-market")
+
+
+def es_bodega(giro: str | None) -> bool:
+    """'Tienda de abarrotes', 'Minimárket' o 'bodega' -> True (sin importar tildes ni mayúsculas)."""
+    sin_tildes = unicodedata.normalize("NFKD", giro or "").encode("ascii", "ignore").decode().lower()
+    return any(palabra in sin_tildes for palabra in GIROS_BODEGA)
 
 
 def contexto_legal(
@@ -187,7 +196,7 @@ def contexto_legal(
 ) -> tuple[list[ArticuloRecuperado], dict[str, list[ArticuloRecuperado]]]:
     """Lo que recibe Claude: (artículos base, {requisito: artículos encontrados})."""
     base = articulos_base()
-    if giro and "bodega" in giro.lower():
+    if es_bodega(giro):
         base += [articulo_completo(c) for c in ARTICULOS_BODEGA]
     citas_base = {a.cita for a in base}
     por_requisito = {

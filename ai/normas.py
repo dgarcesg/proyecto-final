@@ -39,35 +39,37 @@ MAX_CARACTERES = 1800  # artículos más largos se parten (el modelo de embeddin
 class Norma:
     archivo: str
     corto: str  # cómo se cita: "D.Leg. 1256, art. 8"
-    nombre: str
+    nombre: str  # denominación completa, como se muestra en la app y en el escrito
     inicio: str | None = None  # párrafo donde empieza el texto (p. ej., el título del TUO)
     fin: tuple[str, ...] = ("POR TANTO",)  # párrafos donde termina (firmas, fe de erratas)
     modificatorias: str | None = None  # párrafo después del cual SPIJ pone las modificaciones
 
 
 NORMAS = [
-    Norma(
+    Norma(  # texto consolidado de SPIJ (incluye la modificación de la Ley 32587)
         "DL-1256.html", "D.Leg. 1256",
-        "Decreto Legislativo 1256, Ley de Prevención y Eliminación de Barreras Burocráticas "
-        "(texto consolidado, incluye la Ley 32587)",
+        "Decreto Legislativo 1256, Aprueba la Ley de Prevención y Eliminación de Barreras Burocráticas",
     ),
     Norma(
         "DS-006-2026-JUS-TUO-LPAG.html", "TUO de la Ley 27444",
-        "TUO de la Ley 27444, Ley del Procedimiento Administrativo General (D.S. 006-2026-JUS)",
+        "Decreto Supremo 006-2026-JUS, Texto Único Ordenado de la Ley 27444, Ley del Procedimiento "
+        "Administrativo General",
         inicio="TEXTO ÚNICO ORDENADO", fin=("DICE:",),  # al final viene una fe de erratas
     ),
     Norma(
         "DS-163-2020-PCM-TUO-Ley-Marco-Licencia-Funcionamiento.html", "TUO de la Ley 28976",
-        "TUO de la Ley 28976, Ley Marco de Licencia de Funcionamiento (D.S. 163-2020-PCM)",
+        "Decreto Supremo 163-2020-PCM, Texto Único Ordenado de la Ley 28976, Ley Marco de Licencia "
+        "de Funcionamiento",
         inicio="TEXTO ÚNICO ORDENADO", fin=(), modificatorias="Enlace Web: Anexos",
     ),
     Norma(
         "DL-1246.html", "D.Leg. 1246",
-        "Decreto Legislativo 1246, que aprueba diversas medidas de simplificación administrativa",
+        "Decreto Legislativo 1246, Aprueba diversas medidas de simplificación administrativa",
     ),
     Norma(
         "Ley-31866.html", "Ley 31866",
-        "Ley 31866, que modifica la Ley 30877, Ley General de Bodegueros",
+        "Ley 31866, Ley que modifica la Ley 30877, Ley General de Bodegueros, a fin de impulsar la "
+        "formalización de la actividad del bodeguero como microemprendedor",
         fin=("POR TANTO", "Comuníquese"),
     ),
 ]
@@ -76,6 +78,18 @@ NORMAS = [
 # el art. 7 lo modificó el D.Leg. 1657 (2024); los demás (1, 2, 9 y 19 a 22), la Ley 31914 (2023).
 MODIFICADA_POR = {"7": "D.Leg. 1657"}
 MODIFICADA_POR_DEFECTO = "Ley 31914"
+MODIFICADORAS = {"D.Leg. 1657": "el Decreto Legislativo 1657", "Ley 31914": "la Ley 31914"}
+
+
+def nombre_completo(norma: str) -> str:
+    """'D.Leg. 1246' -> 'Decreto Legislativo 1246, Aprueba diversas medidas de simplificación
+    administrativa'. Si no la conoce, devuelve el mismo texto."""
+    for n in NORMAS:
+        if n.corto == norma:
+            return n.nombre
+    if m := re.fullmatch(r"Ley 28976 \(modificada por (.+)\)", norma):
+        return f"Ley 28976, Ley Marco de Licencia de Funcionamiento, modificada por {MODIFICADORAS.get(m.group(1), m.group(1))}"
+    return norma
 
 COMILLAS = "\"“”'‘’"
 ENCABEZADO_ARTICULO = re.compile(

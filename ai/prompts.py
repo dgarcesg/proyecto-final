@@ -82,7 +82,7 @@ norma permite pedirlo.
 - base_legal: de 1 a 3 normas que sustentan tu evaluación, la principal primero. Incluye todas \
 las que apliquen de los artículos de arriba (por ejemplo, para un mismo documento puede haber \
 una prohibición en el D.Leg. 1246 y otra en el TUO de la Ley 27444; si el negocio es una bodega, \
-revisa también el régimen de la Ley 31866). Para cada una:
+tienda de abarrotes o minimarket, revisa también el régimen de la Ley 31866). Para cada una:
   * norma: la norma y el artículo exactos, tal como aparecen en el atributo "cita" (por \
 ejemplo, "TUO de la Ley 28976, art. 7"). No agregues numerales ni literales a la cita.
   * fragmento: una frase copiada palabra por palabra de ese artículo. No la resumas ni la cambies.

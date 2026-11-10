@@ -54,6 +54,11 @@ def test_flujo_de_la_app_con_el_audio_de_ejemplo():
     assert titulos[0].startswith("### 🔴") and titulos[1].startswith("### 🟡"), titulos  # rojo primero
     rojo = [e.value for e in app.error if e.value.startswith("INDECOPI declaró")]
     assert rojo and "San Juan de Lurigancho" in rojo[0]
+    assert "Artículo 8.- De la inaplicación" in rojo[0]  # el art. 8.3, en la misma caja de la resolución
+    dni = [w.value for w in app.warning if w.value.startswith("**Se verifica que esta exigencia figura como prohibida")]
+    assert dni and "Decreto Legislativo 1246, Aprueba diversas medidas de simplificación administrativa" in dni[0]
+    assert "*Artículo 5.- Prohibición de la exigencia de documentación*" in dni[0]
+    assert [x.label for x in app.expander] == ["Cómo funciona"]  # la base legal no es desplegable
     assert app.session_state.consultas == 1
 
 
