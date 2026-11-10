@@ -37,12 +37,24 @@ def test_numeral_que_no_es_el_primero():
 
 
 def test_item_dentro_de_un_literal_trae_los_parrafos_que_lo_introducen():
+    x = extracto("D.Leg. 1256, art. 18", "La existencia del interés público que sustentó la medida cuestionada")
+    assert x.texto.startswith("18.1. Una vez que la Comisión o la Sala")  # numeral
+    assert "elaboración y emisión de la medida cuestionada: a. Que la medida no es arbitraria" in x.texto  # literal
+    assert "acredite: 1. La existencia del interés público" in x.texto  # ítem citado
+
+
+def test_art_7_de_la_ley_marco_va_siempre_completo():  # criterio de la founder: los requisitos máximos
+    for cita in ["TUO de la Ley 28976, art. 7", "Ley 28976 (modificada por D.Leg. 1657), art. 7"]:
+        x = extracto(cita, "serán exigibles como máximo, los siguientes requisitos")  # solo el encabezado
+        assert "(...)" not in x.texto
+        assert x.texto.splitlines()[0].startswith("Para el otorgamiento de la licencia de funcionamiento")
+        assert any(p.startswith("d.1)") for p in x.texto.splitlines())
+        assert x.texto.splitlines()[-1].startswith("Verificados los requisitos señalados")
     x = extracto("TUO de la Ley 28976, art. 7", "número D.N.I.")
     assert x.norma == ("Decreto Supremo 163-2020-PCM, Texto Único Ordenado de la Ley 28976, Ley Marco de "
                        "Licencia de Funcionamiento")
-    assert x.texto.startswith("Para el otorgamiento de la licencia de funcionamiento serán exigibles como "
-                              "máximo, los siguientes requisitos: a) Solicitud de Licencia de Funcionamiento")
-    assert "(...) 2. Tratándose de personas naturales" in x.texto
+    assert "\nb) En el caso de personas jurídicas" in x.texto and "\nc) Declaración Jurada" in x.texto
+    assert extracto("TUO de la Ley 28976, art. 7", "texto inventado por el modelo") is None  # se verifica igual
 
 
 def test_subnumeral_trae_su_numeral():

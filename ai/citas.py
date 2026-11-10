@@ -20,12 +20,16 @@ from ai.normas import nombre_completo
 
 ARTICULO_CITADO = re.compile(r"^Art[íi]culo \d+")
 
+# Artículos que se citan siempre completos (criterio de la founder, 10/11/2026): el art. 7 de la
+# Ley Marco lista los requisitos máximos, y con solo un fragmento no se sabe cuáles son.
+ARTICULOS_COMPLETOS = {"TUO de la Ley 28976, art. 7", "Ley 28976 (modificada por D.Leg. 1657), art. 7"}
+
 
 @dataclass
 class Extracto:
     norma: str  # "Decreto Legislativo 1246, Aprueba diversas medidas de simplificación administrativa"
     encabezado: str  # "Artículo 5.- Prohibición de la exigencia de documentación"
-    texto: str  # "5.1 Las entidades ... documentos: (...) e) Copia de la ficha RUC ..."
+    texto: str  # "5.1 Las entidades ... documentos: (...) e) Copia de la ficha RUC ..." (completos: con saltos de línea)
 
 
 def normalizar(texto: str) -> str:
@@ -96,10 +100,13 @@ def extracto(norma: str, fragmento: str) -> Extracto | None:
     nombre = nombre_completo(datos["norma"])
 
     ubicacion = _ubicar(fragmento, parrafos)
-    if ubicacion is None:
-        if len(normalizar(fragmento)) >= 15 and normalizar(fragmento) in normalizar(primera):
-            return Extracto(nombre, encabezado, "")  # Claude citó el título del artículo
+    en_titulo = len(normalizar(fragmento)) >= 15 and normalizar(fragmento) in normalizar(primera)
+    if ubicacion is None and not en_titulo:
         return None
+    if cita in ARTICULOS_COMPLETOS:
+        return Extracto(nombre, encabezado, "\n".join(parrafos))  # un párrafo por línea
+    if ubicacion is None:
+        return Extracto(nombre, encabezado, "")  # Claude citó el título del artículo
     inicio, fin = ubicacion
 
     # Si la frase está en un literal, se agregan los párrafos que lo introducen ("... los siguientes:")

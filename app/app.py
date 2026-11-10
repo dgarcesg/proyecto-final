@@ -91,7 +91,8 @@ def transcribir(audio: bytes) -> None:
 def md(texto: str) -> str:
     """Escapa los signos que la app leería como formato ($ como fórmula, * como cursiva...)."""
     texto = re.sub(r"([\\`*_$<>#~\[\]])", r"\\\1", texto)
-    return re.sub(r"^(\d+)\.", r"\1\\.", texto)  # "1. Tratándose..." al inicio no es una lista
+    texto = re.sub(r"^(\d+)\.", r"\1\\.", texto, flags=re.M)  # "1. Tratándose..." no es una lista
+    return texto.replace("\n", "  \n")  # artículos completos: cada literal en su línea
 
 
 def bloque_cita(c) -> str:
