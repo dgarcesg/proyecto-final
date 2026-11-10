@@ -54,9 +54,10 @@ def modelo():
 def _huella_normas() -> str:
     """Si cambia algún HTML de data/normas/ o el código que los divide, cambia la huella."""
     h = hashlib.sha256()
-    for norma in NORMAS:
-        h.update((CARPETA / norma.archivo).read_bytes())
-    h.update((CARPETA.parent.parent / "ai" / "normas.py").read_bytes())
+    archivos = [CARPETA / n.archivo for n in NORMAS] + [CARPETA.parent.parent / "ai" / "normas.py"]
+    for archivo in archivos:
+        # sin distinguir los saltos de línea de Windows y de Linux (el servidor usa Linux)
+        h.update(archivo.read_bytes().replace(b"\r\n", b"\n"))
     return h.hexdigest()[:16]
 
 
