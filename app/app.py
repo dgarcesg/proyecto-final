@@ -17,7 +17,6 @@ import logging
 import re
 import sys
 import time
-from datetime import date
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -26,6 +25,7 @@ sys.path.insert(0, str(RAIZ))  # para poder importar ai/ al correr "streamlit ru
 import streamlit as st  # noqa: E402
 
 from ai import analisis, citas, escrito, llm, medidas, rag, textos, voz  # noqa: E402
+from ai.fechas import hoy_en_lima  # noqa: E402
 
 st.set_page_config(page_title="TUPA bajo la lupa", page_icon="🔎", layout="centered")
 
@@ -57,13 +57,13 @@ def preparar() -> bool:
 @st.cache_resource
 def contador_global() -> dict:
     """Consultas de hoy entre todos los visitantes (vive mientras el servidor esté prendido)."""
-    return {"dia": date.today(), "consultas": 0}
+    return {"dia": hoy_en_lima(), "consultas": 0}
 
 
 def quedan_consultas_hoy() -> bool:
     c = contador_global()
-    if c["dia"] != date.today():
-        c.update(dia=date.today(), consultas=0)
+    if c["dia"] != hoy_en_lima():
+        c.update(dia=hoy_en_lima(), consultas=0)
     return c["consultas"] < MAX_CONSULTAS_DIA
 
 

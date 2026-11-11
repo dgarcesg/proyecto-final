@@ -18,6 +18,7 @@ from datetime import date
 from fpdf import FPDF
 
 from ai import citas, textos
+from ai.fechas import hoy_en_lima
 from ai.schemas import Evaluacion, ExtraccionNota, MedidaPublicada
 
 # --- Plantillas (redacción del escrito) ----------------------------------------------------
@@ -149,7 +150,7 @@ def generar_pdf(evaluaciones: list[Evaluacion], extraccion: ExtraccionNota, hoy:
     en_rojo = rojas(evaluaciones)
     if not en_rojo:
         raise ValueError("El escrito solo se genera para requisitos en rojo")
-    hoy = hoy or date.today()
+    hoy = hoy or hoy_en_lima()
     varias = len(en_rojo) > 1
     medidas: list[MedidaPublicada] = [e.publicacion for e in en_rojo]
     e_ = _Escritor()

@@ -24,6 +24,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from ai import textos
+from ai.fechas import hoy_en_lima
 from ai.schemas import CitaVerificada, Evaluacion, EvaluacionLLM, MedidaPublicada
 
 TABLA = Path(__file__).resolve().parent.parent / "data" / "publicaciones" / "publicaciones.json"
@@ -90,7 +91,7 @@ def decidir(
     hoy: date | None = None,
 ) -> Evaluacion:
     """Convierte la evaluación de Claude en la evaluación final que ve el usuario."""
-    hoy = hoy or date.today()
+    hoy = hoy or hoy_en_lima()
     medida = medidas.get(ev.medida_publicada_id or "")  # si Claude inventa un id, no existe
     base_legal = [CitaVerificada(**c.model_dump()) for c in ev.base_legal]
     texto = ""
