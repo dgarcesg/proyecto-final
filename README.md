@@ -4,7 +4,7 @@
 
 ## 1. One-liner
 
-*(borrador)* Ayudamos a emprendedores de Lima a saber, con una nota de voz, si lo que les pide su municipalidad para la licencia de funcionamiento es legal y, si ya fue declarado barrera burocrática, les damos el escrito listo para presentarlo.
+Ayudamos a emprendedores de Lima a saber, con una nota de voz, si lo que les pide su municipalidad para la licencia de funcionamiento es legal y, si ya fue declarado barrera burocrática, les damos el escrito listo para presentarlo.
 
 ## 2. Founder
 
@@ -23,8 +23,6 @@
 
 ## 3. Problema
 
-*(borrador para revisión de la founder)*
-
 **Quién lo sufre:** los profesionales y pequeños emprendedores de Lima Metropolitana que abren o mantienen un local, como un consultorio de salud o una bodega, y hacen sin asesoría legal el trámite de su licencia de funcionamiento o la renovación de su ITSE.
 
 **Cuánto les cuesta** (notas de 3 conversaciones en [`docs/research/`](docs/research/)):
@@ -42,8 +40,6 @@
 
 ## 4. Solución e insight
 
-*(borrador para revisión de la founder)*
-
 **Qué construimos.** Una app web en la que el emprendedor cuenta, en una nota de voz o por escrito, su distrito, su negocio y lo que le pide la municipalidad. La app le responde, requisito por requisito:
 
 - 🔴 **Rojo:** INDECOPI declaró esa medida barrera burocrática con efectos generales para su distrito, y ya surte efecto. La app le da un **escrito en PDF** para presentarlo en mesa de partes.
@@ -55,8 +51,6 @@ Cada respuesta cita la norma con su denominación completa y el texto exacto del
 **Insight.** La inaplicación con efectos generales ya protege a todos los emprendedores del distrito, pero la información está dispersa y en lenguaje legal, así que el emprendedor difícilmente sabe que su caso ya fue resuelto. No hace falta litigar ni que una IA "opine" sobre la legalidad: basta cruzar lo que le piden con las resoluciones ya publicadas. Por eso la IA solo traduce y busca, y **el rojo lo decide una regla fija**, no el modelo.
 
 ## 5. Why now
-
-*(borrador para revisión de la founder)*
 
 - **La voz ya se puede transcribir gratis y sin sacar el audio del servidor.** Whisper es un modelo abierto que corre en el procesador de un servidor gratuito. Transcribir no cuesta nada por consulta y el audio no se comparte con terceros.
 - **Los LLM ya devuelven respuestas estructuradas y citables a bajo costo.** Claude entrega cada requisito en un formato fijo, con la norma y la frase citada, y el código puede verificar esa frase. Una consulta completa cuesta unos US$ 0.12.
