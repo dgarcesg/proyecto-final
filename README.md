@@ -19,7 +19,7 @@
 | Producto y criterio legal | La founder: qué normas entran al corpus, qué medidas tienen efectos generales y para qué distrito, los textos fijos del rojo y del ámbar, y la redacción del escrito. |
 | Ingeniería | Claude Code (Claude Opus 5.5), bajo la dirección de la founder: scraper, buscador, llamada a Claude, regla del semáforo, app, pruebas y despliegue. La founder revisa cada paso y decide los criterios legales (sección 9). |
 | Diseño | Claude Code en Streamlit, con las indicaciones de la founder: cajas de color por requisito, denominación completa de las normas y citas con su numeral y literal. |
-| Ventas | *(por completar por la founder)* |
+| Ventas | La founder, con foco en el pequeño emprendedor, que llega directo a la app. El gancho es la confianza: la herramienta la diseñó una abogada con experiencia en eliminación de barreras burocráticas. La consulta es gratis, y el emprendedor paga por el escrito solo cuando la ilegalidad es evidente (un rojo). Claude ayuda a preparar el contenido de difusión con los mismos datos de la app, por ejemplo las barreras declaradas en cada distrito. Más adelante, la idea es recoger información de sectores específicos (como salud o bodegas) para especializar la herramienta, y que INDECOPI la adopte como herramienta propia. |
 
 ## 3. Problema
 
@@ -144,15 +144,16 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 
 ## 7. Modelo de negocio
 
-**Quién paga y cuánto:** el emprendedor paga solo cuando la app encuentra algo que puede hacer valer (un rojo), y los gremios pagan por sus asociados.
+**Quién paga y cuánto:** el pequeño emprendedor, y solo cuando la ilegalidad es evidente: cuando la app encuentra un rojo, paga por el escrito.
 
 | Plan | Para quién | Precio (con IGV) | Qué incluye |
 |---|---|---|---|
 | **Gratis** | El emprendedor que está sacando su licencia | S/ 0 | Hasta 3 consultas al mes: semáforo por requisito y base legal |
 | **Escrito** | El emprendedor con un requisito en rojo | **S/ 19.90 por escrito**, pago único con Yape o Plin | El escrito en PDF para presentarlo en mesa de partes |
-| **Gremio** | Asociaciones de bodegueros, cámaras de comercio, colegios profesionales | **S/ 290 al mes** | Hasta 200 consultas al mes para sus asociados, escritos incluidos, y un reporte mensual de las barreras declaradas en sus distritos |
 
-¿Por qué S/ 19.90? Es mucho menos de lo que el escrito puede ahorrarle: en Santa Anita, por ejemplo, INDECOPI declaró barrera burocrática un cobro de S/ 148.60 por la licencia de riesgo bajo. Y el gremio llega de una vez a muchos emprendedores que hoy no saben que estas resoluciones existen.
+¿Por qué S/ 19.90? Es mucho menos de lo que el escrito puede ahorrarle: en Santa Anita, por ejemplo, INDECOPI declaró barrera burocrática un cobro de S/ 148.60 por la licencia de riesgo bajo.
+
+**Más adelante:** que INDECOPI adopte la herramienta como propia, para que cualquier emprendedor sepa si lo que le piden ya fue declarado barrera. Todavía no es un plan con precio.
 
 **Cuánto cuesta cada consulta** (medido el 10/11/2026 con el audio de ejemplo):
 
@@ -169,9 +170,8 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 |---|---|---|---|
 | Gratis | S/ 0 | Hasta 3 consultas: S/ 1.26 al mes | −S/ 1.26: es el costo de conseguir al usuario |
 | Escrito | S/ 16.86 | 1 consulta (S/ 0.42) + comisión (S/ 0.80) = S/ 1.22 | **S/ 15.64 (93 %)** |
-| Gremio | S/ 245.76 | 200 consultas: S/ 84.00 | **S/ 161.76 (66 %)** |
 
-**Costo fijo:** hoy, US$ 0 (Streamlit Community Cloud). Con usuarios reales, un servidor con 4 GB de memoria (la app usa unos 1.7 GB), de unos US$ 20–40 al mes. Se cubre con unos 9 escritos al mes, o con un solo gremio.
+**Costo fijo:** hoy, US$ 0 (Streamlit Community Cloud). Con usuarios reales, un servidor con 4 GB de memoria (la app usa unos 1.7 GB), de unos US$ 20–40 al mes. Se cubre con unos 9 escritos al mes.
 
 Para cuidar el crédito, la app permite 5 consultas por visitante y 60 al día en total, y la cuenta de Anthropic tiene un tope de gasto.
 
