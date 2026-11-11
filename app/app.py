@@ -129,7 +129,7 @@ def mostrar_evaluacion(e) -> None:
         if otras:
             caja("\n\n".join([f"**{titulo_base_legal(e)}**", *(bloque_cita(c) for c in otras)]))
         if e.color == "rojo" and e.publicacion:  # la inaplicación alcanza solo a la disposición declarada
-            st.warning(textos.aviso_rojo(e.publicacion), icon="⚠️")
+            st.warning(textos.aviso_rojo(e.publicacion, md), icon="⚠️")
         for c in e.base_legal:
             if not c.verificada:
                 st.caption(f"⚠️ Claude citó también {md(c.norma)}, pero esa frase no está en el texto de la "

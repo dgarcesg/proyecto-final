@@ -9,6 +9,7 @@ Para cambiar la redacción, edita las plantillas de este archivo.
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from datetime import date
 
@@ -49,11 +50,21 @@ AUN_NO_SURTE_EFECTO = (
 # alcanza a la disposición declarada barrera, no a la misma exigencia reintroducida en otra norma.
 AVISO_ROJO = (
     "**Verifica el fundamento antes de presentar el escrito.** La inaplicación con efectos generales "
-    "solo alcanza a la disposición que INDECOPI declaró barrera burocrática en la Res. {resolucion}. "
-    "Si la municipalidad te exige este requisito con base en esa misma disposición, se aplica. Si la "
-    "exigencia fue reintroducida en otra norma posterior (por ejemplo, una nueva ordenanza), esta "
-    "resolución ya no la alcanza. Pide a la municipalidad que te indique en qué norma se basa."
+    "solo alcanza a la disposición que INDECOPI declaró barrera burocrática en la Res. {resolucion}"
+    "{disposicion}. Si la municipalidad te exige este requisito con base en esa misma disposición, se "
+    "aplica. Si la exigencia fue reintroducida en otra norma posterior (por ejemplo, una nueva "
+    "ordenanza), esta resolución ya no la alcanza. Pide a la municipalidad que te indique en qué "
+    "norma se basa."
 )
+
+# Dónde estaba la exigencia, según el texto de la medida: "... materializada en el artículo 4 de la
+# Ordenanza 334-MDSJL". Se prefiere "materializada en": "contenida en" a veces nombra otra norma
+# ("la autorización sectorial contenida en el Decreto Supremo 006-2013-PCM, materializada en ...").
+_MATERIALIZADA = re.compile(r"\bmaterializad[oa]s? en (.+)$", re.I | re.S)
+_CONTENIDA = re.compile(r"\b(?:contenid|consignad)[oa]s? en (.+)$", re.I | re.S)
+_INSTRUMENTO = re.compile(r"Ordenanza|Texto Único|TUPA|Decreto|Acuerdo|Resolución|Reglamento", re.I)
+_FIN_DE_ORACION = re.compile(r"\.\s+(?=[A-ZÁÉÍÓÚÑ(“\"-])")  # no corta en "numeral 7.2. del" ni "D.S. 046"
+_SIN_NOMBRE = re.compile(r"\b(?:citad|mencionad|referid)[oa]s?\b", re.I)  # "la citada ordenanza": ¿cuál?
 
 ESTADOS = {
     "revocada": "esa resolución fue revocada",
@@ -112,8 +123,28 @@ def texto_rojo(m: MedidaPublicada, desde: date, distrito_usuario: str | None) ->
     return ROJO.format(**_datos(m, desde, None, distrito_usuario))
 
 
-def aviso_rojo(m: MedidaPublicada) -> str:
-    return AVISO_ROJO.format(resolucion=m.numero_resolucion)
+def disposicion_declarada(m: MedidaPublicada) -> str | None:
+    """'el artículo 4 de la Ordenanza 334-MDSJL'; None si la medida no dice dónde estaba."""
+    x = _MATERIALIZADA.search(m.medida) or _CONTENIDA.search(m.medida)
+    if x is None:
+        return None
+    texto = " ".join(x.group(1).split())
+    texto = _FIN_DE_ORACION.split(texto)[0]  # algunas filas traen pegada la medida siguiente
+    texto = re.split(r",? materializad[oa]s? en ", texto)[0]  # filas que repiten la disposición
+    texto = texto.split(":")[0]  # "... de la Ordenanza 007-2017-MDMM: exhibiciones, ..."
+    texto = re.sub(r",? para los siguientes supuestos$", "", texto.rstrip(" .,;"))
+    texto = texto.replace("la presente resolución", "la resolución")
+    if not _INSTRUMENTO.search(texto) or _SIN_NOMBRE.search(texto):
+        return None  # "el artículo 17 de la citada ordenanza" no dice cuál es
+    return texto
+
+
+def aviso_rojo(m: MedidaPublicada, escapar=lambda t: t) -> str:
+    """El aviso del rojo. `escapar` protege el texto de la medida del formato de la app (app.md)."""
+    disposicion = disposicion_declarada(m)
+    return AVISO_ROJO.format(
+        resolucion=m.numero_resolucion, disposicion=f": {escapar(disposicion)}" if disposicion else "",
+    )
 
 
 def texto_ambar(

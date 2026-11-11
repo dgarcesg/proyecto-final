@@ -6,6 +6,7 @@ Correr desde la raíz del repo:
 
 from datetime import date
 
+from ai import textos
 from ai.schemas import EvaluacionLLM, MedidaPublicada
 from ai.semaforo import decidir
 
@@ -112,6 +113,38 @@ def test_si_el_tramite_no_esta_en_la_medida_no_se_usa():
 def test_texto_si_aun_no_surte_efecto():
     d = decision("PRUEBA#1", "La Victoria", hoy=date(2026, 11, 8))
     assert "Surte efecto desde el 09/11/2026" in d.texto_publicacion
+
+
+def con_medida(texto):
+    return MEDIDA.model_copy(update={"medida": texto})
+
+
+def test_aviso_del_rojo_con_la_disposicion_declarada():  # criterio de la founder
+    m = con_medida("El cobro de S/ 148.60 para la licencia, materializado en el Texto Único de Procedimientos "
+                   "Administrativos de la Municipalidad, aprobado mediante Ordenanza 308/MDSA.")
+    aviso = textos.aviso_rojo(m)
+    assert aviso.startswith("**Verifica el fundamento antes de presentar el escrito.**")
+    assert ("declaró barrera burocrática en la Res. 0000-2026/SEL-INDECOPI (ficticia): el Texto Único de "
+            "Procedimientos Administrativos de la Municipalidad, aprobado mediante Ordenanza 308/MDSA. Si") in aviso
+    assert "reintroducida en otra norma posterior" in aviso
+
+
+def test_disposicion_prefiere_materializada_y_corta_la_medida_siguiente():
+    m = con_medida("La copia de la autorización sectorial contenida en el Decreto Supremo 006-2013-PCM, "
+                   "materializada en el procedimiento 5.5 del TUPA, aprobado mediante la Ordenanza 571-MDR "
+                   "(y modificatorias). El requisito consistente en presentar otra cosa, materializado en ...")
+    assert textos.disposicion_declarada(m) == ("el procedimiento 5.5 del TUPA, aprobado mediante la Ordenanza "
+                                               "571-MDR (y modificatorias)")
+    m = con_medida("La exigencia, materializada en el literal f) del numeral 7.2. del artículo 7 de la Ordenanza 548/MM.")
+    assert textos.disposicion_declarada(m) == "el literal f) del numeral 7.2. del artículo 7 de la Ordenanza 548/MM"
+
+
+def test_sin_disposicion_clara_el_aviso_no_la_menciona():
+    for texto in ["La exigencia, materializada en el artículo 17 de la citada ordenanza.",
+                  "La prohibición de colocar infraestructuras en predios inclinados."]:
+        m = con_medida(texto)
+        assert textos.disposicion_declarada(m) is None
+        assert "en la Res. 0000-2026/SEL-INDECOPI (ficticia). Si la municipalidad" in textos.aviso_rojo(m)
 
 
 if __name__ == "__main__":
