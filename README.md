@@ -8,7 +8,9 @@
 
 ## 2. Founder
 
-**Diana Adriana Garces Garcia**. *(foto y una línea sobre la founder: por completar por la founder)*
+<img src="docs/founder.jpg" alt="Diana Adriana Garces Garcia" width="160">
+
+**Diana Adriana Garces Garcia**. *(una línea sobre la founder: por completar por la founder)*
 
 **Cómo cubro cada área con agentes de IA:**
 
