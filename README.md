@@ -1,6 +1,6 @@
 # TUPA bajo la lupa
 
-**App:** https://tupa-bajo-la-lupa.streamlit.app/ · **Video de respaldo:** *(por completar por la founder)* · **Repo:** https://github.com/dgarcesg/proyecto-final
+**App:** https://tupa-bajo-la-lupa.streamlit.app/ · **Video de respaldo:** [docs/Demo-TUPA-bajo-la-lupa.mp4](docs/Demo-TUPA-bajo-la-lupa.mp4) · **Repo:** https://github.com/dgarcesg/proyecto-final
 
 ## 1. One-liner
 
@@ -61,7 +61,7 @@ Cada respuesta cita la norma con su denominación completa y el texto exacto del
 
 **Capturas del flujo principal:** *(por agregar en `docs/capturas/`)*
 
-**Video de respaldo (60–90 s):** *(por completar por la founder)*
+**Video de respaldo:** [docs/Demo-TUPA-bajo-la-lupa.mp4](docs/Demo-TUPA-bajo-la-lupa.mp4): consultorio dental en Barranco, de la nota de voz al escrito en PDF.
 
 ### Arquitectura
 
