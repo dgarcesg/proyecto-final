@@ -128,6 +128,8 @@ def mostrar_evaluacion(e) -> None:
             caja("\n\n".join(partes + [bloque_cita(c) for c in de_la_resolucion]))
         if otras:
             caja("\n\n".join([f"**{titulo_base_legal(e)}**", *(bloque_cita(c) for c in otras)]))
+        if e.color == "rojo" and e.publicacion:  # la inaplicación alcanza solo a la disposición declarada
+            st.warning(textos.aviso_rojo(e.publicacion), icon="⚠️")
         for c in e.base_legal:
             if not c.verificada:
                 st.caption(f"⚠️ Claude citó también {md(c.norma)}, pero esa frase no está en el texto de la "
@@ -151,8 +153,10 @@ def mostrar_resultado(r: analisis.Resultado, segundos: float) -> None:
     for e in sorted(r.evaluaciones, key=lambda e: ORDEN[e.color]):
         mostrar_evaluacion(e)
     if conteo["rojo"]:
-        st.info("La municipalidad no puede exigirte los requisitos en rojo. Descarga este escrito, "
-                "completa a mano tu nombre, DNI y domicilio, y preséntalo en mesa de partes.")
+        st.info("La municipalidad no puede exigirte los requisitos en rojo si se basan en la misma "
+                "disposición que INDECOPI declaró barrera burocrática (revisa el aviso ⚠️ de cada uno). "
+                "Descarga este escrito, completa a mano tu nombre, DNI y domicilio, y preséntalo en "
+                "mesa de partes.")
         st.download_button(
             "📄 Descargar escrito para la municipalidad (PDF)",
             data=escrito.generar_pdf(r.evaluaciones, ex),

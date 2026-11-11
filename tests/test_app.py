@@ -55,6 +55,8 @@ def test_flujo_de_la_app_con_el_audio_de_ejemplo():
     rojo = [e.value for e in app.error if e.value.startswith("INDECOPI declaró")]
     assert rojo and "San Juan de Lurigancho" in rojo[0]
     assert "Artículo 8.- De la inaplicación" in rojo[0]  # el art. 8.3, en la misma caja de la resolución
+    aviso = [w.value for w in app.warning if w.value.startswith("**Verifica el fundamento")]
+    assert aviso and "Res. 0549-2026/SEL-INDECOPI" in aviso[0]  # el aviso del rojo (criterio de la founder)
     dni = [w.value for w in app.warning if w.value.startswith("**Se verifica que esta exigencia figura como prohibida")]
     assert dni and "Decreto Legislativo 1246, Aprueba diversas medidas de simplificación administrativa" in dni[0]
     assert "*Artículo 5.- Prohibición de la exigencia de documentación*" in dni[0]

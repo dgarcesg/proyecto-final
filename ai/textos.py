@@ -45,6 +45,16 @@ AUN_NO_SURTE_EFECTO = (
     "{resolucion}, publicada el {publicada}). Surte efecto desde el {desde} (art. 8.3 del D.Leg. 1256)."
 )
 
+# Aviso bajo cada rojo (criterio de la founder, 10/11/2026): la inaplicación con efectos generales
+# alcanza a la disposición declarada barrera, no a la misma exigencia reintroducida en otra norma.
+AVISO_ROJO = (
+    "**Verifica el fundamento antes de presentar el escrito.** La inaplicación con efectos generales "
+    "solo alcanza a la disposición que INDECOPI declaró barrera burocrática en la Res. {resolucion}. "
+    "Si la municipalidad te exige este requisito con base en esa misma disposición, se aplica. Si la "
+    "exigencia fue reintroducida en otra norma posterior (por ejemplo, una nueva ordenanza), esta "
+    "resolución ya no la alcanza. Pide a la municipalidad que te indique en qué norma se basa."
+)
+
 ESTADOS = {
     "revocada": "esa resolución fue revocada",
     "entidad_ya_modifico": "la municipalidad ya modificó la norma que la contenía",
@@ -100,6 +110,10 @@ def _datos(m: MedidaPublicada, desde: date, tramite_sugerido: str | None, distri
 
 def texto_rojo(m: MedidaPublicada, desde: date, distrito_usuario: str | None) -> str:
     return ROJO.format(**_datos(m, desde, None, distrito_usuario))
+
+
+def aviso_rojo(m: MedidaPublicada) -> str:
+    return AVISO_ROJO.format(resolucion=m.numero_resolucion)
 
 
 def texto_ambar(
