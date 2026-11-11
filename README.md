@@ -59,7 +59,19 @@ Cada respuesta cita la norma con su denominación completa y el texto exacto del
 2. **Revisa lo que entendimos:** el texto transcrito se puede corregir antes de enviarlo.
 3. **Resultado:** un semáforo por requisito, con la resolución de INDECOPI y la base legal en cajas de color. Si hay rojo, aparece el botón para descargar el escrito en PDF.
 
-**Capturas del flujo principal:** *(por agregar en `docs/capturas/`)*
+**Capturas del flujo principal** (la consulta del video: consultorio dental en Barranco):
+
+1. **El caso:** la nota de voz, transcrita por Whisper, que la persona puede corregir antes de revisarla.
+
+   ![El caso transcrito por Whisper](docs/capturas/1_caso.png)
+
+2. **El semáforo:** rojo, con la resolución de INDECOPI y el art. 8 del Decreto Legislativo 1256.
+
+   ![El semáforo con la resolución de INDECOPI](docs/capturas/2_semaforo.png)
+
+3. **El escrito en PDF:** listo para mesa de partes, con los datos de la persona en blanco.
+
+   ![El escrito en PDF](docs/capturas/3_escrito.png)
 
 **Video de respaldo:** [docs/Demo-TUPA-bajo-la-lupa.mp4](docs/Demo-TUPA-bajo-la-lupa.mp4): consultorio dental en Barranco, de la nota de voz al escrito en PDF.
 
@@ -120,7 +132,15 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 
 ## 7. Modelo de negocio
 
-**Quién paga y cuánto:** *(por completar por la founder: precio concreto, máximo tres planes)*
+**Quién paga y cuánto:** el emprendedor paga solo cuando la app encuentra algo que puede hacer valer (un rojo), y los gremios pagan por sus asociados.
+
+| Plan | Para quién | Precio (con IGV) | Qué incluye |
+|---|---|---|---|
+| **Gratis** | El emprendedor que está sacando su licencia | S/ 0 | Hasta 3 consultas al mes: semáforo por requisito y base legal |
+| **Escrito** | El emprendedor con un requisito en rojo | **S/ 19.90 por escrito**, pago único con Yape o Plin | El escrito en PDF para presentarlo en mesa de partes |
+| **Gremio** | Asociaciones de bodegueros, cámaras de comercio, colegios profesionales | **S/ 290 al mes** | Hasta 200 consultas al mes para sus asociados, escritos incluidos, y un reporte mensual de las barreras declaradas en sus distritos |
+
+¿Por qué S/ 19.90? Es mucho menos de lo que el escrito puede ahorrarle: en Santa Anita, por ejemplo, INDECOPI declaró barrera burocrática un cobro de S/ 148.60 por la licencia de riesgo bajo. Y el gremio llega de una vez a muchos emprendedores que hoy no saben que estas resoluciones existen.
 
 **Cuánto cuesta cada consulta** (medido el 10/11/2026 con el audio de ejemplo):
 
@@ -129,7 +149,17 @@ python -m ai.rag buscar "me piden croquis de ubicación"   # prueba del buscador
 | Claude Opus 5.5: 2 llamadas, unos 20 mil tokens de entrada (US$ 4 por millón) y la salida (US$ 20 por millón) | unos **US$ 0.11–0.12** |
 | Whisper y buscador | US$ 0: corren en el servidor de la app |
 | Servidor (Streamlit Community Cloud) | US$ 0 en el plan gratuito |
-| **Total variable** | **unos US$ 0.12 por consulta** |
+| **Total variable** | **unos US$ 0.12 por consulta** (unos S/ 0.42, con un tipo de cambio referencial de S/ 3.50) |
+
+**Margen de contribución por plan** (sobre el precio sin IGV; la comisión de Yape o Plin para comercios se estima en 4 %):
+
+| Plan | Ingreso sin IGV | Costo variable | Margen |
+|---|---|---|---|
+| Gratis | S/ 0 | Hasta 3 consultas: S/ 1.26 al mes | −S/ 1.26: es el costo de conseguir al usuario |
+| Escrito | S/ 16.86 | 1 consulta (S/ 0.42) + comisión (S/ 0.80) = S/ 1.22 | **S/ 15.64 (93 %)** |
+| Gremio | S/ 245.76 | 200 consultas: S/ 84.00 | **S/ 161.76 (66 %)** |
+
+**Costo fijo:** hoy, US$ 0 (Streamlit Community Cloud). Con usuarios reales, un servidor con 4 GB de memoria (la app usa unos 1.7 GB), de unos US$ 20–40 al mes. Se cubre con unos 9 escritos al mes, o con un solo gremio.
 
 Para cuidar el crédito, la app permite 5 consultas por visitante y 60 al día en total, y la cuenta de Anthropic tiene un tope de gasto.
 
