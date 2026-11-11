@@ -3,11 +3,11 @@
 Notas de la founder después de la conversación. Sin nombre: la persona aparece con un alias. No es un emprendedor sino un colega de la founder, que asesora en estos casos: por eso varias preguntas de la plantilla no aplican.
 
 - **Fecha:** noviembre de 2026
-- **Canal:** *(por completar)*
+- **Canal:** en persona
 - **Perfil:** abogado especialista en barreras burocráticas, colega de la founder
 - **Distrito:** no aplica
 - **Giro del negocio:** no aplica (asesoría legal)
-- **¿Aceptó que use sus respuestas (anonimizadas) en el proyecto?:** *(por confirmar)*
+- **¿Aceptó que use sus respuestas (anonimizadas) en el proyecto?:** sí, sin su nombre
 
 ## Preguntas
 
