@@ -240,10 +240,17 @@ def main() -> None:
             "de tu distrito como de otras municipalidades.\n"
             "4. Claude evalúa cada requisito citando la norma; el sistema comprueba que la cita "
             "esté palabra por palabra en la ley.\n"
-            "5. El **rojo** no lo decide la IA: solo sale si INDECOPI declaró esa barrera con "
-            "efectos generales para tu distrito y ya surte efecto, conforme al numeral 8.3 del "
-            "artículo 8 del Decreto Legislativo 1256, Aprueba la Ley de Prevención y Eliminación "
-            "de Barreras Burocráticas."
+            "5. El resultado es un **semáforo** para cada requisito:\n"
+            "    - 🟢 **Verde:** te lo pueden pedir, porque la ley lo permite.\n"
+            "    - 🟡 **Ámbar:** podría ser una barrera burocrática. Hay normas o resoluciones de "
+            "INDECOPI que podrían sustentar su ilegalidad, pero no una declaración con efectos "
+            "generales que ya se aplique a tu distrito (por ejemplo, porque la resolución es de "
+            "otra municipalidad).\n"
+            "    - 🔴 **Rojo:** INDECOPI ya declaró esa exigencia barrera burocrática con efectos "
+            "generales para tu distrito y ya surte efecto, conforme al numeral 8.3 del artículo 8 "
+            "del Decreto Legislativo 1256, Aprueba la Ley de Prevención y Eliminación de Barreras "
+            "Burocráticas. El rojo no lo decide la IA, sino una regla fija. Si hay un rojo, la app "
+            "te entrega un escrito para presentarlo en mesa de partes."
         )
 
 
