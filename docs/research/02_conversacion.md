@@ -5,7 +5,7 @@ Notas de la founder después de la conversación. Sin nombre: la persona aparece
 - **Fecha:** noviembre de 2026
 - **Canal:** en persona
 - **Perfil:** médica con consultorio propio, en funcionamiento
-- **Distrito:** *(no lo anoté)*
+- **Distrito:** Pueblo Libre
 - **Giro del negocio:** consultorio médico
 - **¿Aceptó que use sus respuestas (anonimizadas) en el proyecto?:** sí
 
@@ -16,7 +16,7 @@ Notas de la founder después de la conversación. Sin nombre: la persona aparece
 2. **¿Cuánto demoró el trámite?**
    No lo comentó.
 3. **¿Cuánto pagaste en total?**
-   No dio montos. Como no conoce mucho la materia, normalmente recurre a **tramitadores**, y eso le cuesta.
+   No dio montos y no le pregunté cuánto cobran los tramitadores. Como no conoce mucho la materia, normalmente recurre a **tramitadores**, y eso le cuesta.
 4. **¿Te pidieron algo que te pareció raro o de más? ¿Qué hiciste?**
    Contó que **a veces le han pedido coima** durante el trámite.
 5. **¿Cuánto pagarías por un escrito listo para presentar en mesa de partes?**

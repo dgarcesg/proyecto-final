@@ -23,7 +23,17 @@
 
 ## 3. Problema
 
-*(por completar por la founder: quién lo sufre, cuánto le cuesta en horas o soles, cómo lo resuelve hoy; evidencia en [`docs/research/`](docs/research/))*
+*(borrador para revisión de la founder)*
+
+**Quién lo sufre:** los profesionales y pequeños emprendedores de Lima Metropolitana que abren o mantienen un local, como un consultorio de salud o una bodega, y hacen sin asesoría legal el trámite de su licencia de funcionamiento o la renovación de su ITSE.
+
+**Cuánto les cuesta** (notas de 3 conversaciones en [`docs/research/`](docs/research/)):
+
+- **Tiempo y logística.** A una odontóloga de Arequipa que busca local en Lima, algunas municipalidades le piden su título profesional original y otras, solo una declaración jurada; para empezar el trámite tendría que traer el título desde Arequipa ([conversación 1](docs/research/01_conversacion.md)). La ley solo exige la declaración jurada (literal d.1 del artículo 7 del TUO de la Ley 28976).
+- **Tramitadores y pagos indebidos.** Una médica con consultorio en Pueblo Libre paga tramitadores cada vez que renueva su ITSE, porque no conoce la materia, y contó que a veces le han pedido coima ([conversación 2](docs/research/02_conversacion.md)).
+- **Cobros que ya no se pueden exigir.** Por ejemplo, INDECOPI declaró barrera burocrática con efectos generales un cobro de S/ 148.60 de Santa Anita por la licencia de riesgo bajo.
+
+**Cómo lo resuelven hoy:** cumplen lo que les pide la municipalidad, pagan a un tramitador o consultan a un abogado. Pero ni un abogado especialista en barreras burocráticas tiene una herramienta centralizada: unir una resolución del portal de INDECOPI con su publicación en El Peruano, que es la que hace que opere la inaplicación, ya es difícil para él, y no se imagina cuánto más lo es para un emprendedor ([conversación 3](docs/research/03_conversacion.md)).
 
 **Lo que muestran los datos públicos** (al 10/11/2026, ver [Fuentes de datos](#fuentes-de-datos)):
 
