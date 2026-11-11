@@ -3,11 +3,11 @@
 Notas de la founder después de la conversación. Sin nombre: la persona aparece con un alias.
 
 - **Fecha:** noviembre de 2026
-- **Canal:** *(por completar)*
+- **Canal:** llamada
 - **Perfil:** odontóloga de Arequipa que está buscando dónde poner su consultorio en Lima. Es un contacto personal de la founder.
 - **Distrito:** todavía no lo decide; está comparando locales en distintos distritos.
 - **Giro del negocio:** consultorio dental
-- **¿Aceptó que use sus respuestas (anonimizadas) en el proyecto?:** *(por confirmar)*
+- **¿Aceptó que use sus respuestas (anonimizadas) en el proyecto?:** sí
 
 ## Preguntas
 

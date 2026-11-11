@@ -10,7 +10,7 @@
 
 <img src="docs/founder.jpg" alt="Diana Adriana Garces Garcia" width="160">
 
-**Diana Adriana Garces Garcia**. *(una línea sobre la founder: por completar por la founder)*
+**Diana Adriana Garces Garcia**. Abogada especialista en Derecho de la Competencia y Regulación, con experiencia en eliminación de barreras burocráticas.
 
 **Cómo cubro cada área con agentes de IA:**
 
